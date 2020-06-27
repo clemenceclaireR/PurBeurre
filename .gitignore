@@ -1,0 +1,14 @@
+# IDE
+*.pyc
+__pycache__/*.pyc
+.idea/
+
+# Migrations
+purbeurre/migrations/*
+
+# Environments
+.env
+.venv
+env/
+venv/
+config.json
