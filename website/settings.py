@@ -114,7 +114,8 @@ else:
             'USER': 'postgres',
             'PASSWORD':os.environ.get('DB_PASSWORD'),
             'HOST': os.environ.get('SQL_HOST', 'localhost'),
-            'PORT': os.environ.get('SQL_PORT', '5432'),
+            'PORT': os.environ.get('SQL_PORT', '5432')    },
+}
 
 if os.environ.get('ENV') == 'PRODUCTION':
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
