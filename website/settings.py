@@ -24,12 +24,12 @@ if not os.environ.get('ENV') == 'PRODUCTION':
         secrets = json.load(secrets_file)
 
 
-    def get_secret(setting, secrets=secrets):
-        """Get secret setting or fail with ImproperlyConfigured"""
-        try:
-            return secrets[setting]
-        except KeyError:
-            raise ImproperlyConfigured("Set the {} setting".format(setting))
+def get_secret(setting, secrets=secrets):
+    """Get secret setting or fail with ImproperlyConfigured"""
+    try:
+        return secrets[setting]
+    except KeyError:
+        raise ImproperlyConfigured("Set the {} setting".format(setting))
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +38,8 @@ if not os.environ.get('ENV') == 'PRODUCTION':
 # SECURITY WARNING: keep the secret key used in production secret!
 if not os.environ.get('ENV') == 'PRODUCTION':
     SECRET_KEY = get_secret('SECRET_KEY') or "dummy-secret-key"
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or "dummy-secret-key"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -114,12 +116,12 @@ else:
             'USER': 'postgres',
             'PASSWORD':os.environ.get('DB_PASSWORD'),
             'HOST': os.environ.get('SQL_HOST', 'localhost'),
-            'PORT': os.environ.get('SQL_PORT', '5432')    },
-}
+            'PORT': os.environ.get('SQL_PORT', '5432'),
+        },
+    }
 
 if os.environ.get('ENV') == 'PRODUCTION':
     DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
