@@ -24,12 +24,12 @@ if not os.environ.get('ENV') == 'PRODUCTION':
         secrets = json.load(secrets_file)
 
 
-def get_secret(setting, secrets=secrets):
-    """Get secret setting or fail with ImproperlyConfigured"""
-    try:
-        return secrets[setting]
-    except KeyError:
-        raise ImproperlyConfigured("Set the {} setting".format(setting))
+    def get_secret(setting, secrets=secrets):
+        """Get secret setting or fail with ImproperlyConfigured"""
+        try:
+            return secrets[setting]
+        except KeyError:
+            raise ImproperlyConfigured("Set the {} setting".format(setting))
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,7 +37,13 @@ def get_secret(setting, secrets=secrets):
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if not os.environ.get('ENV') == 'PRODUCTION':
-    SECRET_KEY = get_secret('SECRET_KEY') or "dummy-secret-key"
+    try:
+        with open(os.path.join(BASE_DIR, 'config.json')) as secrets_file:
+            secrets = json.load(secrets_file)
+            settings = secrets[setting]
+        SECRET_KEY = settings('SECRET_KEY') or "dummy-secret-key"
+    except:
+        pass
 else:
     SECRET_KEY = os.environ.get('SECRET_KEY') or "dummy-secret-key"
 
