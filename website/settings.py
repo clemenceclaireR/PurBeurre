@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import django_heroku
 import json
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
