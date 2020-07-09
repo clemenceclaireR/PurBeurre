@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="content" class="search_background">
+    <header class=" text-center d-flex text-white">
+<div class="text-center text-white mini-header">
+  <img class="img-responsive">
+  <div class="container my-auto text-center">
+    <h2>
+      Vous avez recherché : {{ research.name }}
+    </h2>
+  </div>
+</div>
+</header>
+
+
+{% if not list_prod %}
+<p>Désolé, nous n'avons pas trouvé de substitut</p>
+
+
+{% else %}
+<div class="text-center">
+    <h1>Voici une liste de produit qui pourraient vous intéresser</h1>
+</div>
+{% for n in list_prod %}
+
+    <div class="col-xs-12 col-sm-6 col-md-4 sub">
+
+        <div class="product">
+            <figure>
+                <img class="img-fluid" src="{{n.img}}">
+            </figure>
+
+            <div class="text-center">>
+
+            <div class="col-md-4 offset-md-5 mx-auto ">
+            <form class="form-inline my-2 my-lg-0" role="form" method="post" action="">
+                {% csrf_token %}
+                <button type=”submit” class="btn btn-sm btn-submit button-form">Sauvegarder</button>
+            </form>
+                </div>
+                </div>
+        </div>
+
+    </div>
+</div>
+    {% endfor %}
+
+{% endif %}
+{% endblock%}

@@ -40,8 +40,9 @@ if not os.environ.get('ENV') == 'PRODUCTION':
     try:
         with open(os.path.join(BASE_DIR, 'config.json')) as secrets_file:
             secrets = json.load(secrets_file)
-            settings = secrets[setting]
-        SECRET_KEY = settings('SECRET_KEY') or "dummy-secret-key"
+            settings = secrets['SECRET_KEY']
+        SECRET_KEY = settings or "dummy-secret-key"
+        #SECRET_KEY = settings('SECRET_KEY') or "dummy-secret-key"
     except:
         pass
 else:
@@ -51,9 +52,11 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['rugged-badlands-94185.herokuapp.com',  '127.0.0.1']
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
 
 
 # Application definition
@@ -71,6 +74,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -167,5 +171,8 @@ USE_TZ = True
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+    )

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="content" class="search_background">
+
+    <div class="text-center  text-white">
+        <h2 class="page-section">Liste produit</h2>
+    </div>
+    </div>
+
+<section class="standard">
+{% if not list_prod %}
+    <h3 class="text-center page-section">Désolé, il n'y a pas de résultats</h3>>
+
+{% else %}
+
+    <ul>
+{% for n in list_prod %}
+        <li><a href = {% url 'search_result' prod=n.name  %}>{{n.name }}</a> </li>
+        {% endfor %}
+    </ul>
+
+
+{% endif %}
+</section>
+
+{% endblock %}

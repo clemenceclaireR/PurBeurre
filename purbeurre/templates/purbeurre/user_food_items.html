@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="content" class="search_background">
+  <div class="container my-auto text-center text-white">
+    <h2 class="page-section">Mes aliments</h2>
+  </div>
+</div>
+
+{% if not list_prod %}
+    <div class = "myfav">
+        <div class="text-center ">
+            <h1  class="page-section">Vous n'avez pas enregistré de produit pour le moment.</h1>
+        </div>
+    </div>
+
+{% else %}
+    <div class="text-center">
+        <h1>Vos produits enregistrés</h1>
+    </div>
+{% for n in list_prod %}
+
+    <div class="col-xs-12 col-sm-6 col-md-4 sub">
+
+        <div class="prod">
+            <figure>
+                <img class="img-fluid" src="{{n.img}}">
+            </figure>
+
+            <div class="text-center">
+                <a href= {% url 'search_result' prod=n.name  %}>{{n.name }} </a>
+
+                <p>Nutriscore : {{ n.nutrition_grade }} </p>
+
+                <div class="col-md-4 offset-md-5 mx-auto ">
+                    <form class="form-inline my-2 my-lg-0" role="form" method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_prod" value="{{ n }}" >
+                        <button type=”submit” class="btn btn-sm btn-submit button-form">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+
+
+{% endif %}
+{% endblock %}

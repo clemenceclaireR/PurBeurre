@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="content" class="background">
+<header class="masthead text-center d-flex text-white">
+      <div class="container my-auto">
+        <div class="row">
+          <div class="col-10 mx-auto">
+
+            <h1 class="text-uppercase">
+              Du gras oui, mais de qualité !
+            </h1>
+            <hr>
+            <h2>Trouvez un produit de substitution pour ceux que vous consommez tous les jours.</h2>
+
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div  id="searchform">
+              <form class="form-group searchbox ui-widget col-md-12 col-md-offset-5 text-center"
+                    role="form" method="post"
+                    action="{% url 'index' %}">
+                 {{ form_body.research }}
+                 {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-user btn-block bbtn-sm btn-submit button-form">Chercher</button>
+              </form>
+            </div>
+        </div>
+      </div>
+    </header>
+</div>
+
+<section class="page-section bg-primary" id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading text-white">Colette et Remy</h2>
+            <hr class="light my-4">
+            <h3 class="text-faded mb-4">Les rois de la ratatouille</h3>
+            <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum."</p>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-xs-12 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <img src="{% static 'assets/img/colette.jpg' %}" alt="colette" class="rounded colette">
+              <h3 class="mb-3">Colette</h3>
+            </div>
+          </div>
+          <div class="col-lg-6 col-xs-12 text-center">
+            <div class="service-box mt-5 mx-auto">
+              <img src="{% static 'assets/img/remy.jpg' %}" alt="rémy" class="rounded remy">
+              <h3 class="mb-3">Rémy</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="page-section" id="contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="section-heading">Contactez-nous !</h2>
+            <hr class="my-4">
+            <p class="mb-5">Lorem Ipsum</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 ml-auto text-center">
+            <i class="fas fa-phone fa-3x mb-3 sr-contact-1"></i>
+            <p>01-02-03-04-05</p>
+          </div>
+          <div class="col-lg-4 mr-auto text-center">
+            <i class="fas fa-envelope fa-3x mb-3 sr-contact-2"></i>
+            <p>
+              <a href="mailto:contact@purbeurre.com">contact@purbeurre.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+       <footer class="row" id="footer1">
+           {% include 'footer.html' %}
+
+    </footer>
+
+
+
+
+
+
+{% endblock %}
