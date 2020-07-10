@@ -51,12 +51,16 @@ else:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# debug toolbar config
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+}
 
 ALLOWED_HOSTS = ['rugged-badlands-94185.herokuapp.com',  '127.0.0.1']
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'index'
 
 
 # Application definition
@@ -69,6 +73,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'purbeurre',
+    'tests',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -81,6 +87,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -154,6 +161,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
+INTERNAL_IPS = ('127.0.0.1',)
 
 LANGUAGE_CODE = 'en-us'
 

@@ -1,6 +1,9 @@
-      <div class="col-lg-6 text-center">
-        <a  href="#"> Mentions légales </a>
-      </div>
-      <div class="col-lg-6 text-center">
-        <a href="{% url 'index' %}#contact">Contact</a>
-      </div>
+{% load static %}
+
+
+<div class="col-lg-6 text-center">
+    <h2><a  href="{% url 'legal_information' %}"> Mentions légales </a></h2>
+</div>
+<div class="col-lg-6 text-center">
+    <h2><a href="{% url 'index' %}#contact">Contact</a></h2>
+</div>

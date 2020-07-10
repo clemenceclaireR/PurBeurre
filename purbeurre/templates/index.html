@@ -16,14 +16,16 @@
 
           </div>
         </div>
-        <div class="row d-flex justify-content-center">
-            <div  id="searchform">
-              <form class="form-group searchbox ui-widget col-md-12 col-md-offset-5 text-center"
+        <div class="row d-flex justify-content-center" >
+            <div  id="searchform" class="form-inline">
+              <form class="form-group searchbox ui-widget col-md-12 col-md-offset-5 text-center active_padding"
                     role="form" method="post"
                     action="{% url 'index' %}">
                  {{ form_body.research }}
                  {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-user btn-block bbtn-sm btn-submit button-form">Chercher</button>
+                  <div class="input-group-append">
+                <button type="submit" class="btn btn-primary btn-user btn-block bbtn-sm btn-submit button-form text-black-50">Chercher</button>
+                      </div>
               </form>
             </div>
         </div>
@@ -88,11 +90,13 @@
       </div>
     </section>
 
+<div id="legal_information">
+
        <footer class="row" id="footer1">
            {% include 'footer.html' %}
 
     </footer>
-
+</div>
 
 
 

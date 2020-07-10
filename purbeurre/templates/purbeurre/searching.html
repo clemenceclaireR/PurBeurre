@@ -2,27 +2,37 @@
 {% load static %}
 
 {% block content %}
+
 <div id="content" class="search_background">
+
 
     <div class="text-center  text-white">
         <h2 class="page-section">Liste produit</h2>
     </div>
     </div>
 
-<section class="standard">
-{% if not list_prod %}
+
+{% if not product_list %}
     <h3 class="text-center page-section">Désolé, il n'y a pas de résultats</h3>>
 
 {% else %}
 
-    <ul>
-{% for n in list_prod %}
-        <li><a href = {% url 'search_result' prod=n.name  %}>{{n.name }}</a> </li>
+
+
+    <ul class="d-flex d-inline-flex align-items-center text-center">
+{% for product in product_list %}
+        <li class="d-inline-flex col-xs-12 col-sm-6 col-md-4 col-lg-4 align-items-center text-center">
+            <a href = {% url 'search_result' product=n.name  %}>{{product.name }}</a>
+            <figure>
+                <img class="img-fluid" src="{{ product.image }}">
+            </figure>
+
         {% endfor %}
+        </li>
     </ul>
 
 
-{% endif %}
-</section>
 
+
+{% endif %}
 {% endblock %}

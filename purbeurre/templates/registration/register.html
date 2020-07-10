@@ -5,16 +5,11 @@
 
 {% if not  user.is_authenticated %}
 
-<head>
-      <title>Register</title>
 
-
-</head>
-
-<body class="bg-gradient-primary">
 <!--{% block title %}Create an account{% endblock %}-->
 
-
+<div id="content" class="background">
+<header class="masthead">
  <div class="container">
           <div class="col-xl-12 col-lg-12 col-md-9">
 
@@ -26,7 +21,7 @@
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Inscription</h1>
+                <h2 class="h4 text-gray-900 mb-4">Inscription</h2>
               </div>
         <form action="." method="post">
 
@@ -45,18 +40,14 @@
     </div>
        </div>
 
-  <div class="container-fluid" style="background-color: white;  bottom: 0; ;width: 100%; background-color: #fff;color:#333;">
-    <footer class="pt-4 my-md-5 pt-md-5" >
-    </footer>
-  </div>
 
  </div>
-</body>
+</header>
+</div>
 
 {% else %}
     <p>You already have an account.</p>
 {% endif %}
 
-</html>
 
 {% endblock %}

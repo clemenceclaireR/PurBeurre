@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm, SearchForm, HomeSearchForm
-from django.http import HttpResponse
+from .models.products import Products
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -49,7 +51,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, 'index.html')
+                    return HttpResponseRedirect('../')
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -59,10 +61,16 @@ def user_login(request):
     return render(request, 'registration/login.html', {'form': form})
 
 
+@login_required
 def account(request):
     return render(request, 'registration/account.html')
 
 
+def legal_information(request):
+    return render(request, 'legal_information.html')
+
+
+@login_required
 def user_food_items(request):
     return render(request, 'purbeurre/user_food_items.html')
 
@@ -71,14 +79,15 @@ def product_view(request, product):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            prod = form.cleaned_data['research']
-            return redirect('/' + prod + '/')
+            product= form.cleaned_data['research']
+            return redirect('/' + product + '/')
         else:
-            form = SearchForm()
+            SearchForm()
     else:
-        form = SearchForm()
-    # rajouter query bdd pour le produit et le nutriscore
-    return render(request, 'purbeurre/searching.html')
+        SearchForm()
+    product_list = Products.objects.filter(
+        nutriscore__range=('d', 'e'), name__icontains=product) # veut pas mettre c
+    return render(request, 'purbeurre/searching.html', {'product_list':product_list})
 
 
 def search_result(request, product):
@@ -88,11 +97,15 @@ def search_result(request, product):
             product = form.cleaned_data['research']
             return redirect('/' + product + '/')
         else:
-            form = SearchForm()
+            SearchForm()
     else:
-        form = SearchForm()
-        # rajouter query bdd pour le produit et le nutriscore
-    return render(request, 'product/search_result.html')
+        SearchForm()
+    research = Products.objects.get(name=product)
+
+    # ICI
+    product_list = Products.objects.filter(nutriscore__range=('a', 'c'), category=research.category)
+
+    return render(request, 'purbeurre/search_result.html', {'product_list': product_list, 'research':research})
 
 
 

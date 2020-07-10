@@ -12,3 +12,7 @@ purbeurre/migrations/*
 env/
 venv/
 config.json
+
+# test
+htmlcov/
+/.coverage
