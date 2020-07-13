@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm, SearchForm, HomeSearchForm
 from .models.products import Products
+from .models.favorites import Favorites
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -72,10 +74,11 @@ def legal_information(request):
 
 @login_required
 def user_food_items(request):
-    return render(request, 'purbeurre/user_food_items.html')
+    return render(request, 'purbeurre/saved_products.html')
 
 
 def product_view(request, product):
+
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -90,6 +93,37 @@ def product_view(request, product):
     return render(request, 'purbeurre/searching.html', {'product_list':product_list})
 
 
+@login_required
+def save_product(request, product):
+    product_to_save = Products.objects.get(name=product)
+    current_user = request.user
+    result = None
+
+    if request.method == 'POST':
+
+        favorites = Favorites.objects.all()
+    # verify if this product is already saved by the user
+        product = Favorites.objects.filter(substitute=product_to_save, user=User.objects.get(id=current_user.id))
+        if not product:
+            validated_product = Favorites(substitute=product_to_save, user=User.objects.get(id=current_user.id))
+            validated_product.save()
+            result = 1
+        return render(request, 'purbeurre/saving_done.html', {'result':result, 'product':product})
+    return render(request, 'index.html', locals())
+
+
+def saved_products(request):
+
+    current_user = request.user
+    favorites = Favorites.objects.filter(user=current_user.id)
+    list_favorites = []
+    for i in favorites:
+        favorite = Products.objects.get(name=i.substitute)
+        list_favorites.append(favorite)
+
+    return render(request, 'purbeurre/saved_products.html', {'list_favorites':list_favorites})
+
+
 def search_result(request, product):
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -101,13 +135,22 @@ def search_result(request, product):
     else:
         SearchForm()
     research = Products.objects.get(name=product)
-
     # ICI
     product_list = Products.objects.filter(nutriscore__range=('a', 'c'), category=research.category)
 
-    return render(request, 'purbeurre/search_result.html', {'product_list': product_list, 'research':research})
+    return render(request, 'purbeurre/substitutes.html', {'product_list': product_list, 'research':research})
 
 
 
-def food_item_description(request):
-    return render(request, 'purbeurre/food_item_description.html')
+def product_description(request, product):
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data['research']
+            return redirect('/' + product + '/')
+        else:
+            SearchForm()
+    else:
+        SearchForm()
+    product_description = Products.objects.get(name=product)
+    return render(request, 'purbeurre/product_page.html', locals())

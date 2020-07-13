@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div id="content" class="search_background">
+
+<div class="text-center text-white ">
+
+    <h2 class="page-section">
+      {{ product_description.name }}
+    </h2>
+  </div>
+
+</div>
+
+
+
+
+        <div class="row">
+        <div class="col-6 ml-auto text-center">
+        <img class="" src="https://static.openfoodfacts.org/images/misc/nutriscore-{{ product_description.nutriscore }}.png" alt="">
+      </div>
+
+
+    <div class="col-6 text-center">
+        <h3>Informations nutritionelles : </h3>
+        <img src ={{ product_description.nutrition_image }}>
+    </div>
+         </div>
+
+ <div class="row flex-d justify-content-center" id="url-off">
+        <div class="text-primary text-center" id="off-link-container">
+            <h3><a id="off-link" href="{{ product_description.link }}"
+                target="_blank">Voir la fiche d'OpenFoodFacts</a></h3>
+        </div>
+  </div>
+
+<!--insérer footer -->
+
+
+
+
+        {% endblock %}

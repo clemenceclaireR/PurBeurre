@@ -10,7 +10,7 @@ class Favorites(models.Model):
 
     class Meta:
         db_table = 'favorites'
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     substitute = models.ForeignKey(Products,
                                    on_delete=models.CASCADE,
                                    related_name='saved_substitute')

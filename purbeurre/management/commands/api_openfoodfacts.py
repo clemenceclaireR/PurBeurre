@@ -60,12 +60,14 @@ class Command(BaseCommand):
             nutriscore = product_information.get('nutrition_grades', None)
             link = product_information.get('url', None)
             image = product_information.get('image_url', None)
+            nutrition_image = product_information.get('image_nutrition_url', None)
             if category is None \
                     or name is None \
                     or len(name) > 75 \
                     or nutriscore is None \
                     or link is None \
-                    or image is None:
+                    or image is None \
+                    or nutrition_image is None:
                 continue
             else:
                 try:
@@ -75,6 +77,7 @@ class Command(BaseCommand):
                         nutriscore=nutriscore,
                         link=link,
                         image=image,
+                        nutrition_image=nutrition_image,
                     )
                     if created:
                         product.save()

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="content" class="search_background">
+  <div class="text-center text-white">
+    <h2 class="page-section">Mes aliments</h2>
+  </div>
+</div>
+
+{% if not list_favorites %}
+        <div class="text-center ">
+            <h1  class="page-section">Vous n'avez pas enregistré de produit pour le moment.</h1>
+        </div>
+
+{% else %}
+    <div class="text-center">
+        <h1>Vos produits enregistrés</h1>
+    </div>
+
+
+<ul class="justify-content-center align-items-center">
+{% for product in list_favorites %}
+
+    <div class="row">
+        <li class="top-buffer offset-xs-1 col-xs-11 offset-sm-1 col-sm-5 offset-md-1 col-md-3 offset-lg-1 col-lg-3
+        align-items-center product_block">
+            <div class="row">
+            <div class="col-12 text-center active_padding">
+                 {% if product.nutriscore in 'a,b' %}
+                    <p class="nutriscore good-nutriscore">
+                        {{ product.nutriscore }}</p>
+                    {% elif product.nutriscore == 'c' %}
+                    <p class="nutriscore medium-nutriscore">
+                        {{ product.nutriscore }}</p>
+                    {% elif product.nutriscore in 'd,e' %}
+                    <p class="nutriscore bad-nutriscore bg-danger">
+                        {{ product.nutriscore }}</p>
+                    {% else %}
+                    <p class="nutriscore">
+                        {{ product.nutriscore }}
+                    </p>
+                {% endif %}
+
+            </div>
+            </div>
+
+
+        <div class="row">
+                <div class="col-12">
+            <figure class="justify-content-center text-center">
+                <img class="search_image img-fluid" src="{{ product.image }}" alt="">
+            </figure>
+                </div>
+        </div>
+
+            <div class="row">
+            <div class="col-12 text-center active_padding">
+                <a href = {% url 'product_description' product=product.name  %}>{{ product.name }}</a>
+            </div>
+            </div>
+
+    {% endfor %}
+
+    </li>
+    </div>
+</ul>
+
+{% endif %}
+{% endblock %}

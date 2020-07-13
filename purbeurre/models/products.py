@@ -15,6 +15,7 @@ class Products(models.Model):
     nutriscore = models.CharField(max_length=1, null=True)
     link = models.URLField()
     image = models.URLField()
+    nutrition_image = models.URLField()
 
 
     def __str__(self):
