@@ -57,6 +57,20 @@
   color: white;
 }
 
+.put_bottom {
+  position : absolute;
+  bottom   : 0;
+}
+
+
+.saved_product {
+  background-color: #345a61;
+  border-radius: 0.5em;
+  border: #0f6674;
+  color: white;
+  padding: 0.5em;
+}
+
 .active_padding {
   padding: 0.5em;
 }
@@ -71,11 +85,16 @@
    padding: 1em;
    box-shadow: 1px 2px 2px rgba(196,85,37,.8);
    background-color: #fff6f0;
+  height: 350px;
 }
+
+
 
 .search_image {
   height: 200px;
   border-radius: 1em;
+  position: relative;
+  max-width: 100%
 }
 
 
@@ -6087,6 +6106,7 @@ a.close.disabled {
 .carousel-indicators .active {
   opacity: 1;
 }
+
 
 .carousel-caption {
   position: absolute;

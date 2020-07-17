@@ -16,6 +16,7 @@ class Products(models.Model):
     link = models.URLField()
     image = models.URLField()
     nutrition_image = models.URLField()
+    is_favorite = models.BooleanField(null=True)
 
 
     def __str__(self):

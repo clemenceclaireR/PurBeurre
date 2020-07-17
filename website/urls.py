@@ -25,7 +25,8 @@ urlpatterns = [
 
 ]
 
-if settings.DEBUG:
+# in order to not raise django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace while testing
+if settings.DEBUG or settings.TESTING_MODE:
     import debug_toolbar
 
     urlpatterns += [

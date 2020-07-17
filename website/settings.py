@@ -14,6 +14,7 @@ import os
 import json
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
+import sys
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -47,6 +48,13 @@ if not os.environ.get('ENV') == 'PRODUCTION':
         pass
 else:
     SECRET_KEY = os.environ.get('SECRET_KEY') or "dummy-secret-key"
+
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'purbeurre.authentication.EmailAuthBackend',
+]
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -107,6 +115,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# in order to not raise django.urls.exceptions.NoReverseMatch: 'djdt' is not a registered namespace while testing
+TESTING_MODE = 'test' in sys.argv
 
 WSGI_APPLICATION = 'website.wsgi.application'
 

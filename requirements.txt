@@ -7,7 +7,7 @@ pytest-dotenv==0.5.2
 configparser==5.0.0
 gunicorn==20.0.4
 heroku.env==0.5.5
-coverage==3.6
+coverage==5.2
 requests==2.24.0
 #django-heroku==0.3.1
 django-debug-toolbar==2.2

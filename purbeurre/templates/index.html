@@ -21,7 +21,8 @@
               <form class="form-group searchbox ui-widget col-md-12 col-md-offset-5 text-center active_padding"
                     role="form" method="post"
                     action="{% url 'index' %}">
-                 {{ form_body.research }}
+                 <!--{{ form_body.research }}-->
+                 {{ form.research }}
                  {% csrf_token %}
                   <div class="input-group-append">
                 <button type="submit" class="btn btn-primary btn-user btn-block bbtn-sm btn-submit button-form text-black-50">Chercher</button>

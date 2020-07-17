@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from django.utils.translation import gettext as _
 
 urlpatterns = [
     #path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
@@ -15,6 +16,7 @@ urlpatterns = [
     url('save_done/(?P<product>.*)/$', views.save_product, name='save_product'),
     url('product_description/(?P<product>.*)/$', views.product_description, name='product_description'),
     path('legal_information/', views.legal_information, name='legal_information'),
-    path('', views.index, name='index')
+    path('', views.index, name='index'),
+    path(_('ajax'), views.AjaxView.as_view(), name=_('ajax')),
 ]
 
