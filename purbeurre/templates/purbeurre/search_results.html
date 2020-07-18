@@ -13,7 +13,7 @@
     </div>
 
 
-{% if not product_list %}
+{% if not all_prod %}
     <h3 class="text-center page-section">Désolé, il n'y a pas de résultats</h3>>
 
 {% else %}
@@ -21,10 +21,9 @@
 
 
     <ul class="justify-content-center align-items-center">
-{% for product in product_list %}
+{% for product in all_prod %}
         <div class="row ">
-        <li class="top-buffer offset-xs-1 offset-sm-1 offset-md-1 offset-lg-1
-        col-xs-11  col-sm-5  col-md-3  col-lg-3
+        <li class="top-buffer offset-xs-1 col-xs-11 offset-sm-1 col-sm-5 offset-md-1 col-md-3  offset-lg-1 col-lg-3
         align-items-center product_block">
             <div class="row">
                 <div class="col-12 text-center active_padding">
@@ -83,7 +82,7 @@
 <!--insérer footer -->
 <div id="legal_information" class="align-text-bottom">
 
-       <footer class="row">
+       <footer class="row" id="footer1">
            {% include 'footer.html' %}
 
     </footer>

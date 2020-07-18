@@ -3,19 +3,108 @@
 }
 
 .bg-login-image {
-  background-image: url("../assets/img/portfolio/thumbnails/1.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
+  background-image: url("../assets/img/bread.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
 }
 
 .bg-register-image {
-  background-image: url("../assets/img/portfolio/thumbnails/2.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
+  background-image: url("../assets/img/donut.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
 }
 
 .header_account {
-  background-image: url("../assets/img/account_banner.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
+  background-image: url("../assets/img/salad.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
+}
+
+.legal_background
+{
+  background-image: url("../assets/img/blueberries.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
 }
 
 .search_background {
   background-image: url("../assets/img/search_background.jpg"), linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%);
+}
+
+#legal_information {
+  background-color: #345A61;
+  padding: 2em;
+  color: white;
+}
+
+.biscuit {
+  padding: 0.5em;
+}
+
+.nutriscore {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    right: -1.5rem;
+    top: -1.5rem;
+    line-height: 3rem;
+    border-radius: 50%;
+}
+
+.good-nutriscore {
+    background-color: green;
+  color: white;
+}
+
+.medium-nutriscore {
+    background-color: orange;
+  color: white;
+}
+.bad-nutriscore {
+    background-color: red;
+  color: white;
+}
+
+.put_bottom {
+  position : absolute;
+  bottom   : 0;
+}
+
+
+.saved_product {
+  background-color: #345a61;
+  border-radius: 0.5em;
+  border: #0f6674;
+  color: white;
+  padding: 0.5em;
+}
+
+.active_padding {
+  padding: 0.5em;
+}
+
+.top-buffer {
+  margin-top:1em;
+}
+
+.product_block {
+   border-radius: 1em;
+   border: solid 1px #e8a75d;
+   padding: 1em;
+   box-shadow: 1px 2px 2px rgba(196,85,37,.8);
+   background-color: #fff6f0;
+  height: 350px;
+}
+
+
+
+.search_image {
+  height: 200px;
+  border-radius: 1em;
+  position: relative;
+  max-width: 100%
+}
+
+
+.product_list {
+    margin-top: 20px;
+}
+
+ul li {
+  display: inline;
+  padding: 10px;
 }
 
 @charset "UTF-8";
@@ -181,12 +270,14 @@ sup {
 }
 
 a {
-  color: #f4623a;
+  /*color: #f4623a;*/
+  color: #e8a75d;
   text-decoration: none;
   background-color: transparent;
 }
 a:hover {
-  color: #d6370c;
+  /*color: #d6370c;*/
+  color: #86ebe6;;
   text-decoration: underline;
 }
 
@@ -2453,6 +2544,7 @@ textarea.form-control {
   display: inline-block;
   font-weight: 400;
   color: #212529;
+  /*color: #86EBe6;*/
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;
@@ -2493,13 +2585,13 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #f4623a;
-  border-color: #f4623a;
+  background-color: #de9440;
+  border-color: #c45525;
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #f24516;
-  border-color: #ee3e0d;
+  background-color: #e8a75d;
+  border-color: #de9440;
 }
 .btn-primary:focus, .btn-primary.focus {
   color: #fff;
@@ -6015,6 +6107,7 @@ a.close.disabled {
   opacity: 1;
 }
 
+
 .carousel-caption {
   position: absolute;
   right: 15%;
@@ -6117,7 +6210,8 @@ a.close.disabled {
 }
 
 .bg-primary {
-  background-color: #f4623a !important;
+  /*background-color: #f4623a !important;*/
+  background-color: #c45525 !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
@@ -10119,7 +10213,8 @@ hr.light {
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);
-  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/bg-masthead.jpg");
+  /*background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/bg-masthead.jpg");*/
+  background: linear-gradient(to bottom, rgba(92, 77, 66, 0.8) 0%, rgba(92, 77, 66, 0.8) 100%), url("../assets/img/background_index.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
