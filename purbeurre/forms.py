@@ -12,15 +12,6 @@ class SearchForm(forms.Form):
     )
 
 
-# class HomeSearchForm(forms.Form):
-#     research = forms.CharField(
-#         label='Recherche',
-#         widget=forms.TextInput(attrs={'placeholder': 'Trouvez un aliment',
-#                                       'class': 'form-control',
-#                                       'autocomplete': 'off'})
-#     )
-
-
 class LoginForm(forms.Form):
     username = UsernameField(label="", widget=forms.TextInput(attrs={'autofocus': True,
                                                            'class': "form-control form-control-user",

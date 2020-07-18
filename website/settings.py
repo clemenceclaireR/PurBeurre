@@ -58,7 +58,11 @@ AUTHENTICATION_BACKENDS = [
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if not os.environ.get('ENV') == 'PRODUCTION':
+    DEBUG = True
+else:
+    DEBUG = False
+
 # debug toolbar config
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,

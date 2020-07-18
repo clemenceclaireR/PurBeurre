@@ -1,20 +1,19 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from purbeurre.views import user_login
 from purbeurre.forms import UserRegistrationForm
+from django import forms
+
 
 class LoginTest(TestCase):
 
     def setUp(self):
-         self.new_user = User.objects.create(username="test", password="test")
+         User.objects.create_user(username="test", password="test", email="test@test.fr")
 
     def test_login(self):
-        self.login = authenticate(username="test", password="test")
-        if self.login:
-            response = self.client.get(self.login)
-            self.assertEqual(response['username'], "test")
+        self.client.login(email="test@test.fr", password="test")
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
 
     def test_login_return_expected_html(self):
         response = self.client.get(reverse("login"))
@@ -22,16 +21,17 @@ class LoginTest(TestCase):
 
     def test_login_valid_credentials(self) :
         response = self.client.post(reverse("login"), {
-            'username': self.new_user.username, 'password': self.new_user.password
+            'username': "test", 'password': "test"
+        })
+        self.assertTrue(response.status_code, 200)
+        self.assertRedirects(response, '/')
+
+    def test_login_invalid_credentials(self):
+        response = self.client.post(reverse("login"), {
+            'username': "false", 'password': 'wrong_password'
         })
         self.assertTrue(response.status_code, 200)
 
-    # def test_login_invalid_credentials(self):
-    #     response = self.client.post(reverse("login"), {
-    #         'username': self.new_user.username, 'password': 'wrong_password'
-    #     })
-    #     self.assertRedirects(response, 'registration/login.html')
-    #
 
 
 class UserRegistrationTest(TestCase):
@@ -60,6 +60,17 @@ class UserRegistrationTest(TestCase):
             'password2': '',
             'first_name': '',
             'last_name': ''
+        })
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_password_dont_match(self) :
+        response = self.client.post(reverse('register'), data= {
+            'username': 'test3',
+            'email': 'test3@test.fr',
+            'password': 'test',
+            'password2': 'wrong',
+            'first_name': 'test',
+            'last_name': 'test'
         })
         self.assertEqual(response.status_code, 200)
 

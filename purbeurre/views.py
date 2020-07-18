@@ -13,21 +13,14 @@ def index(request):
 
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        # form_body = HomeSearchForm(request.POST)
         if form.is_valid():
             prod = form.cleaned_data['research']
-            return redirect('searching/' + prod + '/')
+            return redirect('search_results/' + prod + '/')
         else:
             form = SearchForm()
-            # form_body = HomeSearchForm()
-        # if form_body.is_valid():
-        #     prod = form.cleaned_data['research']
-        #     return redirect('searching/' + prod + '/')
     else:
         form = SearchForm()
-        # form_body = HomeSearchForm()
     return render(request, 'index.html', {'form': form,
-                                          # 'form_body': form_body
                                           })
 
 
@@ -44,22 +37,9 @@ def register(request):
                           {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'registration/register.html', {'user_form': user_form})
+    return render(request, 'registration/register.html', {'user_form': user_form })
 
-from django.contrib.auth.backends import ModelBackend
-"""
-class EmailBackend(ModelBackend):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        UserModel = get_user_model()
-        try:
-            user = UserModel.objects.get(email=username)
-        except UserModel.DoesNotExist:
-            return None
-        else:
-            if user.check_password(password):
-                return user
-        return None
-    """
+
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -70,13 +50,11 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     return HttpResponseRedirect('../')
-                else:
-                    return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login')
     else:
         form = LoginForm()
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form })
 
 
 @login_required
@@ -84,24 +62,21 @@ def account(request):
     form = SearchForm(request.POST)
     if form.is_valid():
         prod = form.cleaned_data['research']
-        return redirect('searching/' + prod + '/')
+        return redirect('search_results/' + prod + '/')
     else:
         form = SearchForm()
-    return render(request, 'registration/account.html', {'form': form})
+    return render(request, 'registration/account.html', {'form': form })
 
 
 def legal_information(request):
     form = SearchForm(request.POST)
-    return render(request, 'legal_information.html', {'form': form})
+    return render(request, 'legal_information.html', {'form': form })
 
 
-@login_required
-def user_food_items(request):
-    form = SearchForm(request.POST)
-    return render(request, 'purbeurre/saved_products.html', {'form': form})
 
 
-def product_view(request, product):
+
+def search_results(request, product):
     form = SearchForm(request.POST)
     if request.method == 'POST':
 
@@ -114,27 +89,24 @@ def product_view(request, product):
         SearchForm()
     product_list = Products.objects.filter(
         nutriscore__range=('d', 'e'), name__icontains=product)
-    return render(request, 'purbeurre/searching.html', {'product_list':product_list, 'form': form })
+    return render(request, 'purbeurre/search_results.html', {'product_list':product_list,
+                                                             'form': form })
 
 
 @login_required
 def save_product(request, product):
     product_to_save = Products.objects.get(name=product)
     current_user = request.user
-    result = None
 
     if request.method == 'POST':
 
-    # verify if this product is already saved by the user
+    # verify if this product is already saved by the user and tag it as favorite in Products table
         product = Favorites.objects.filter(substitute=product_to_save, user=User.objects.get(id=current_user.id))
         product_to_save.is_favorite = True
         product_to_save.save()
         if not product:
             validated_product = Favorites(substitute=product_to_save, user=User.objects.get(id=current_user.id))
             validated_product.save()
-            result = 1
-        #return render(request, 'purbeurre/saving_done.html', {'result':result, 'product':product})
-    #return render(request, 'purbeurre/substitutes.html', locals())
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -153,7 +125,8 @@ def saved_products(request):
                                                              })
 
 
-def search_result(request, product):
+
+def search_substitutes(request, product):
     form = SearchForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -188,11 +161,3 @@ def product_description(request, product):
     product_description = Products.objects.get(name=product)
     return render(request, 'purbeurre/product_page.html', locals())
 
-
-class AjaxView(View):
-    def get(self, request: HttpRequest) -> HttpResponse:
-        results: List[str] = []
-        query: str = request.GET.get('term', '')
-        for r in Favorites.objects.filter(name__icontains=query)[:15]:
-            results.append(r.name)
-        return JsonResponse(results, safe=False)
