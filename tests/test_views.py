@@ -108,10 +108,19 @@ class AccountTest(TestCase):
 
 class ProductViewTest(TestCase):
     def setUp(self):
-        self.new_user = User.objects.create(username="test", password="test")
+        self.new_user = User.objects.create_user(id=1, username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
-        self.product = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
+        self.product1 = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
                                             image="path/to/image", category=Categories.objects.get(name=self.category))
+        # in order to test is_favorite = True/False
+        self.product2 = Products.objects.create(id=2, name='nocciolata', nutriscore='a', link="http://test.test.fr",
+                                                image="path/to/image",
+                                                category=Categories.objects.get(name=self.category))
+        self.product3 = Products.objects.create(id=3, name='biscuit_nutella', nutriscore='e', link="http://test.test.fr",
+                                                image="path/to/image",
+                                                category=Categories.objects.get(name=self.category))
+        self.favorite = Favorites.objects.create(user=User.objects.get(id=1),
+                                                 substitute=Products.objects.get(name="nutella") )
 
 
     def test_search_form(self):
@@ -150,15 +159,28 @@ class ProductViewTest(TestCase):
         response = self.client.get('/product_description/nutella/')
         self.assertEqual(response.status_code, 200)
 
+    def test_view_uses_correct_template(self):
+        self.client.login(username='test', password='test')
+        response = self.client.get('/search_results/nutella/')
+        self.assertEqual(response.status_code, 200)
+
 
 class SubstituteProductTest(TestCase):
     def setUp(self):
-
-        self.category = Categories(id=1, name="pâte à tariner")
-        self.category.save()
-        self.product = Products(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
-                                image="path/to/image", category=Categories.objects.get(name=self.category))
-        self.product.save()
+        self.new_user = User.objects.create_user(id=1, username="test", password="test")
+        self.category = Categories.objects.create(id=1, name="pâte à tariner")
+        self.product1 = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
+                                                image="path/to/image",
+                                                category=Categories.objects.get(name=self.category))
+        # in order to test is_favorite = True/False
+        self.product2 = Products.objects.create(id=2, name='nocciolata', nutriscore='a', link="http://test.test.fr",
+                                                image="path/to/image",
+                                                category=Categories.objects.get(name=self.category))
+        self.product3 = Products.objects.create(id=3, name='nocciolata_bio', nutriscore='a', link="http://test.test.fr",
+                                                image="path/to/image",
+                                                category=Categories.objects.get(name=self.category))
+        self.favorite = Favorites.objects.create(user=User.objects.get(id=1),
+                                                 substitute=Products.objects.get(name="nocciolata"))
 
     def test_post_search_form_is_valid(self) :
         response = self.client.post('/substitutes/product/', {
@@ -168,20 +190,23 @@ class SubstituteProductTest(TestCase):
         #self.assertRedirects(response, '/searching/test', target_status_code=301, status_code=302)
 
     def test_post_search_form_empty(self) :
+        self.client.login(username='test', password='test')
         response = self.client.post('/substitutes/nutella/', {
             'research': ''
         })
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
+        self.client.login(username='test', password='test')
         response = self.client.get('/substitutes/nutella/')
         self.assertEqual(response.status_code, 200)
 
 
 
+
 class FavoriteProductTest(TestCase):
     def setUp(self):
-        self.new_user = User.objects.create_user(username="test", password="test")
+        self.new_user = User.objects.create_user(id=1 ,username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
         self.product = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
                                        image="path/to/image", category=Categories.objects.get(name=self.category))
@@ -194,6 +219,23 @@ class FavoriteProductTest(TestCase):
         }, HTTP_REFERER='/substitutes/nutella')
         self.assertEqual(Favorites.objects.all().count(), 1)
         self.assertEqual(response.status_code, 302)
+
+    def test_delete_favorite(self):
+        prod = Products.objects.create(id=2, name='nocciolata', nutriscore='d', link="http://test.test.fr",
+                                image="path/to/image", category=Categories.objects.get(name=self.category))
+        Favorites.objects.create(user=User.objects.get(id=1),
+                                            substitute=Products.objects.get(name="nocciolata"))
+        self.client.login(username='test', password='test')
+        response = self.client.post('/deleted_saved_product/', {
+            'delete_product': prod
+        }, )
+        self.assertEqual(Favorites.objects.all().count(), 0)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_favorite_page(self):
+        self.client.login(username='test', password='test')
+        response = self.client.get(reverse('delete_saved_product'))
+        self.assertEqual(response.status_code, 200)
 
     def test_redirect_if_not_logged_in(self):
         response = self.client.get(reverse('saved_products'))

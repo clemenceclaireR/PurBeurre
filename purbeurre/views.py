@@ -92,7 +92,7 @@ def search_results(request, product):
     Search for a product written in the search form by a user
     """
     form = SearchForm(request.POST)
-
+    current_user = request.user
     if request.method == 'POST':
         if form.is_valid():
             product= form.cleaned_data['research']
@@ -103,16 +103,14 @@ def search_results(request, product):
         SearchForm()
     product_list = Products.objects.filter(nutriscore__range=('d', 'e'), name__icontains=product)
 
-    all_prod = []
     for item in product_list:
-        favorites = Favorites.objects.filter(user=User.objects.get(id=request.user.id), substitute=item.id)
+        favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
         if favorites :
             item.is_favorite = True
         else:
             item.is_favorite = False
-        all_prod.append(item)
 
-    return render(request, 'purbeurre/search_results.html', {'all_prod':all_prod,
+    return render(request, 'purbeurre/search_results.html', {
                                                              'form': form,
                                                              'product_list': product_list })
 
@@ -154,13 +152,29 @@ def saved_products(request):
 
     return render(request, 'purbeurre/saved_products.html', {'list_favorites':list_favorites,
                                                              'form': form
+
                                                              })
+@login_required
+def delete_saved_product(request):
+    """
+    Remove a given product from favorites
+    """
+    if request.method == 'POST':
+        prod_name = request.POST.get('delete_product')
+        prod_to_delete = Products.objects.get(name=prod_name)
+        current_user = request.user
+        Favorites.objects.get(substitute=prod_to_delete, user=current_user.id).delete()
+        return render(request, 'purbeurre/delete_saved_product.html', locals())
+
+    return render(request, 'purbeurre/delete_saved_product.html', locals())
+
 
 def search_substitutes(request, product):
     """
     Search substitutes for a given product
     """
     form = SearchForm(request.POST)
+    current_user = request.user
     if request.method == 'POST':
         if form.is_valid():
             product = form.cleaned_data['research']
@@ -170,13 +184,19 @@ def search_substitutes(request, product):
     else:
         SearchForm()
     research = Products.objects.get(name=product)
-    # ICI
     product_list = Products.objects.filter(nutriscore__range=('a', 'c'), category=research.category)
+
+    for item in product_list:
+        favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
+        if favorites :
+            item.is_favorite = True
+        else:
+            item.is_favorite = False
+
 
     return render(request, 'purbeurre/substitutes.html', {'product_list': product_list,
                                                           'research':research,
-                                                          'form': form}
-                                                          )
+                                                          'form': form })
 
 
 def product_description(request, product):

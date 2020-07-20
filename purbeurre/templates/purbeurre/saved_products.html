@@ -60,6 +60,22 @@
             </div>
             </div>
 
+                            <div class="row">
+                    <div class="col-12 text-center active_padding">
+
+            <form class="form-inline my-2 my-lg-0 justify-content-center" role="form" method="post"
+                  action="{% url 'delete_saved_product' %}" >
+                {% csrf_token %}
+            <input type="hidden" name="delete_product" value="{{ product }}" >
+                <button type=”submit” class="btn btn-primary btn-user ">Supprimer</button>
+
+            </form>
+
+
+
+                </div>
+                </div>
+
     {% endfor %}
 
     </li>
