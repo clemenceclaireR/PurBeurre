@@ -61,8 +61,7 @@ AUTHENTICATION_BACKENDS = [
 if not os.environ.get('ENV') == 'PRODUCTION':
     DEBUG = True
 else:
-    DEBUG = True # test heroku debug
-    #DEBUG = False
+    DEBUG = False
 
 # debug toolbar config
 DEBUG_TOOLBAR_CONFIG = {
