@@ -1,25 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Produit supprimé{% endblock %}
 
 {% block content %}
 
-<div id="content" class="header_account">
-<div class="text-center text-white mini-header">
-  <img class="img-responsive">
-  <div class="container my-auto bg-title active_padding">
-    <h1>Bienvenue {{ new_user.first_name }} !</h1>
-      </div>
-</div>
+<div id="content" class="deleted_product_background">
+  <div class="text-center text-white">
+    <h2 class="page-section">Suppression validée </h2>
+  </div>
 </div>
 
 
 <section class="standard">
   <div class="container">
-     <h3 class="text-center active_padding">Ce produit a bien été supprimé de vos favoris.</h3>
+      <h3 class="text-center active_padding">Ce produit a bien été supprimé de vos favoris.</h3>
  </div>
 </section>
-
 
 
 {% endblock %}

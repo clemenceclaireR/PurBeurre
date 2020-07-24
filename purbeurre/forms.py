@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, User
 
 
 class SearchForm(forms.Form):
+    """
+    Product search form
+    """
     research = forms.CharField(
         label="Recherche",
         widget=forms.TextInput(attrs={'placeholder': 'Trouvez un aliment',
@@ -13,6 +16,9 @@ class SearchForm(forms.Form):
 
 
 class LoginForm(forms.Form):
+    """
+    Login form
+    """
     username = UsernameField(label="", widget=forms.TextInput(attrs={'autofocus': True,
                                                            'class': "form-control form-control-user",
                                                            'placeholder': "Nom d'utilisateur"}))
@@ -26,6 +32,11 @@ class UserRegistrationForm(forms.ModelForm):
     """
     Subscription form
     """
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
+
     username = UsernameField(label="", widget=forms.TextInput(attrs={'autofocus': True,
                                                                      'placeholder': "Nom d'utilisateur",
                                                                      'class': "form-control form-control-user",
@@ -58,6 +69,9 @@ class UserRegistrationForm(forms.ModelForm):
                                                                      }),)
 
     def clean_email(self):
+        """
+        Check if e-mail is already used
+        """
         if User.objects.filter(email=self.cleaned_data['email']).exists():
             raise forms.ValidationError("This email address is already registered")
         return self.cleaned_data['email']
@@ -70,7 +84,3 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
-
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email')

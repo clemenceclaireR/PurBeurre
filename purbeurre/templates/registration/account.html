@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Votre compte{% endblock %}
+
 {% block content %}
 <div id="content" class="header_account">
-<div class="text-center text-white mini-header">
-  <img class="img-responsive">
-  <div class="container my-auto bg-title">
-    <h1 class="">AHOY</h1>
-    <h2 class="active_padding">{{ user.first_name }}</h2>
+  <div class="text-center text-white">
+    <h2 class="account-page-section">AHOY</h2>
+  </div>
+  <div class="text-center text-white">
+    <h3 class="active_padding">{{ user.first_name }}</h3>
   </div>
 </div>
-</div>
-
 
 
 <section class="standard">

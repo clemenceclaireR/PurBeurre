@@ -2,24 +2,22 @@
 {% load static %}
 
 
-{% block title %}Welcome{% endblock %}
+{% block title %}Bienvenue{% endblock %}
 
 {% block content %}
 <div id="content" class="header_account">
-<div class="text-center text-white mini-header">
-  <img class="img-responsive">
-  <div class="container my-auto bg-title active_padding">
-    <h1>Bienvenue {{ new_user.first_name }} !</h1>
-      </div>
+  <div class="text-center text-white">
+    <div class="container my-auto bg-title active_padding">
+      <h2 class="page-section">Bienvenue {{ new_user.first_name }} !</h2>
+    </div>
+  </div>
 </div>
-</div>
-
 
 <section class="standard">
   <div class="container">
-     <h3 class="text-center active_padding">Votre compte a bien été créé. Vous pouvez désormais
-         <a href="{% url 'login' %}"> vous identifier</a>.</h3>
- </div>
+    <h3 class="text-center active_padding">Votre compte a bien été créé. Vous pouvez désormais
+      <a href="{% url 'login' %}"> vous identifier</a>.</h3>
+  </div>
 </section>
 
 {% endblock %}

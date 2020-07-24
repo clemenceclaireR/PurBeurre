@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div id="content" class="background">
+<div id="content" class="background_index">
 <header class="masthead text-center d-flex text-white">
       <div class="container my-auto">
         <div class="row">
@@ -21,7 +21,6 @@
               <form class="form-group searchbox ui-widget col-md-12 col-md-offset-5 text-center active_padding"
                     role="form" method="post"
                     action="{% url 'index' %}">
-                 <!--{{ form_body.research }}-->
                  {{ form.research }}
                  {% csrf_token %}
                   <div class="input-group-append">
@@ -89,17 +88,7 @@
           </div>
         </div>
       </div>
-    </section>
-
-<div id="legal_information">
-
-       <footer class="row">
-           {% include 'footer.html' %}
-
-    </footer>
-</div>
-
-
+</section>
 
 
 

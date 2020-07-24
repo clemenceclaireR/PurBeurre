@@ -33,13 +33,12 @@ class LoginTest(TestCase):
         self.assertTrue(response.status_code, 200)
 
 
-
 class UserRegistrationTest(TestCase):
 
     def setUp(self) :
-        self.new_user = User()
+        self.new_user = User.objects.create_user(id=1 ,username="user1", password="test", email="user1@test.fr")
         self.data ={
-            'username': 'test2',
+            'username': 'test',
             'email': 'test@test.fr',
             'password': 'test',
             'password2': 'test',
@@ -47,44 +46,37 @@ class UserRegistrationTest(TestCase):
             'last_name': 'test'
         }
 
-    def test_register_form(self):
-        form = UserRegistrationForm(data=self.data)
-        self.assertTrue(form.is_valid())
-
-
-    def test_register_form_empty(self) :
-        response = self.client.post(reverse('register'), data= {
-            'username': '',
-            'email': '',
-            'password': '',
-            'password2': '',
-            'first_name': '',
-            'last_name': ''
-        })
-        self.assertEqual(response.status_code, 200)
-
-    def test_register_password_dont_match(self) :
-        response = self.client.post(reverse('register'), data= {
-            'username': 'test3',
-            'email': 'test3@test.fr',
-            'password': 'test',
-            'password2': 'wrong',
-            'first_name': 'test',
-            'last_name': 'test'
-        })
-        self.assertEqual(response.status_code, 200)
-
     def test_page_return_expected_html(self):
         response = self.client.get(reverse('register'))
         self.assertTemplateUsed(response, 'registration/register.html')
 
 
-
     def test_register(self):
         response = self.client.post(reverse("register"), data=self.data, follow=True,
                                     HTTP_X_REQUESTED='XMLHttpRequest')
+        self.assertEqual(User.objects.all().count(), 2)
         self.assertTrue(response.status_code, 200)
-        fake_user = User.objects.create_user(username="test", email="test@test.test", password="test")
 
-        self.assertTrue(fake_user.username, "test")
+    def test_register_psw_dont_match(self):
+        response = self.client.post(reverse("register"), data={
+            'username': 'test',
+            'email': 'test@test.fr',
+            'password': 'test',
+            'password2': 'wrong',
+            'first_name': 'test',
+            'last_name': 'test'
+        }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
+        self.assertTrue(response.status_code, 200)
+
+    def test_register_email_alrd_registered(self):
+        response = self.client.post(reverse("register"), data={
+            'username': 'test',
+            'email': 'user1@test.fr',
+            'password': 'test',
+            'password2': 'test',
+            'first_name': 'test',
+            'last_name': 'test'
+        }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
+        self.assertTrue(response.status_code, 200)
+
 

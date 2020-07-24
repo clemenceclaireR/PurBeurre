@@ -10,6 +10,9 @@ from purbeurre.models import Favorites, Products, Categories
 
 
 class IndexPageTestCase(TestCase):
+    """
+    Views test for the index page
+    """
 
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('')
@@ -42,8 +45,10 @@ class IndexPageTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-
 class LegalInformationTestCase(TestCase):
+    """
+    Views test for the legal mentions page
+    """
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('/legal_information/')
         self.assertEqual(response.status_code, 200)
@@ -58,8 +63,10 @@ class LegalInformationTestCase(TestCase):
         self.assertTemplateUsed(response, 'legal_information.html')
 
 
-
 class AccountTest(TestCase):
+    """
+    Views test for the account page
+    """
 
     def setUp(self):
          User.objects.create_user(username="test", password="test")
@@ -84,12 +91,10 @@ class AccountTest(TestCase):
 
     def test_access_if_logged_in(self):
         self.client.login(username='test', password='test')
-        #authenticate(username="test", password="test")
-        #if self.login:
         response = self.client.get(reverse('account'))
         self.assertEqual(response.status_code, 200)
 
-    def test_post_form_from_product_details(self):
+    def test_post_form_from_account_page(self):
         self.client.login(username='test', password='test')
         response = self.client.post(reverse('account'), {
                 'research': 'product'
@@ -97,7 +102,7 @@ class AccountTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/account/search_results/product/')
 
-    def test_post_form_empty_from_product_details(self):
+    def test_post_form_empty_from_account_page(self):
         response = self.client.post(reverse('account'), {
             'research': ''
         })
@@ -105,22 +110,16 @@ class AccountTest(TestCase):
 
 
 
-
 class ProductViewTest(TestCase):
+    """
+    Views test for the search results page and the product description page
+    """
     def setUp(self):
+        # init user for login
         self.new_user = User.objects.create_user(id=1, username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
-        self.product1 = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
+        self.product = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
                                             image="path/to/image", category=Categories.objects.get(name=self.category))
-        # in order to test is_favorite = True/False
-        self.product2 = Products.objects.create(id=2, name='nocciolata', nutriscore='a', link="http://test.test.fr",
-                                                image="path/to/image",
-                                                category=Categories.objects.get(name=self.category))
-        self.product3 = Products.objects.create(id=3, name='biscuit_nutella', nutriscore='e', link="http://test.test.fr",
-                                                image="path/to/image",
-                                                category=Categories.objects.get(name=self.category))
-        self.favorite = Favorites.objects.create(user=User.objects.get(id=1),
-                                                 substitute=Products.objects.get(name="nutella") )
 
 
     def test_search_form(self):
@@ -129,12 +128,16 @@ class ProductViewTest(TestCase):
         self.assertTrue(form.is_valid())
 
 
-
     def test_post_search_form_is_valid(self) :
         response = self.client.post('/search_results/product/', {
             'research': 'nutella'
         })
         self.assertEqual(response.status_code, 302)
+
+    def test_view_url_exists_at_desired_location(self):
+        self.client.login(username='test', password='test')
+        response = self.client.get('/search_results/nutella/')
+        self.assertEqual(response.status_code, 200)
 
 
     def test_post_search_form_empty(self) :
@@ -143,51 +146,43 @@ class ProductViewTest(TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
-    def test_post_form_from_product_details(self):
+    def test_post_form_from_product_details_page(self):
         response = self.client.post('/product_description/product/', {
             'research': 'product'
         })
         self.assertEqual(response.status_code, 302)
 
-    def test_post_form_empty_from_product_details(self):
+    def test_post_form_empty_from_product_details_page(self):
         response = self.client.post('/product_description/nutella/', {
             'research': ''
         })
         self.assertEqual(response.status_code, 200)
 
-    def test_view_product_description(self):
+    def test_view_product_description_page(self):
         response = self.client.get('/product_description/nutella/')
         self.assertEqual(response.status_code, 200)
 
-    def test_view_uses_correct_template(self):
-        self.client.login(username='test', password='test')
-        response = self.client.get('/search_results/nutella/')
-        self.assertEqual(response.status_code, 200)
 
 
 class SubstituteProductTest(TestCase):
+    """
+    Views tests for substitute products view
+    """
     def setUp(self):
+        # init user
         self.new_user = User.objects.create_user(id=1, username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
         self.product1 = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
                                                 image="path/to/image",
                                                 category=Categories.objects.get(name=self.category))
-        # in order to test is_favorite = True/False
-        self.product2 = Products.objects.create(id=2, name='nocciolata', nutriscore='a', link="http://test.test.fr",
-                                                image="path/to/image",
-                                                category=Categories.objects.get(name=self.category))
-        self.product3 = Products.objects.create(id=3, name='nocciolata_bio', nutriscore='a', link="http://test.test.fr",
-                                                image="path/to/image",
-                                                category=Categories.objects.get(name=self.category))
-        self.favorite = Favorites.objects.create(user=User.objects.get(id=1),
-                                                 substitute=Products.objects.get(name="nocciolata"))
+
 
     def test_post_search_form_is_valid(self) :
         response = self.client.post('/substitutes/product/', {
             'research': 'nutella'
         })
         self.assertEqual(response.status_code, 302)
-        #self.assertRedirects(response, '/searching/test', target_status_code=301, status_code=302)
+
 
     def test_post_search_form_empty(self) :
         self.client.login(username='test', password='test')
@@ -205,6 +200,9 @@ class SubstituteProductTest(TestCase):
 
 
 class FavoriteProductTest(TestCase):
+    """
+    Views tests for saving/deleting and consulting saved products
+    """
     def setUp(self):
         self.new_user = User.objects.create_user(id=1 ,username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
@@ -232,7 +230,7 @@ class FavoriteProductTest(TestCase):
         self.assertEqual(Favorites.objects.all().count(), 0)
         self.assertEqual(response.status_code, 200)
 
-    def test_delete_favorite_page(self):
+    def test_view_delete_favorite_page(self):
         self.client.login(username='test', password='test')
         response = self.client.get(reverse('delete_saved_product'))
         self.assertEqual(response.status_code, 200)

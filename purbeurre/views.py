@@ -22,16 +22,18 @@ def index(request):
             form = SearchForm()
     else:
         form = SearchForm()
-    return render(request, 'index.html', {'form': form,
-                                          })
+    return render(request, 'index.html', locals())
 
 
 def register(request):
     """
     Register a user account
     """
+    form = SearchForm(request.POST)
+
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
+        form = SearchForm(request.POST)
 
         if user_form.is_valid():
             new_user = user_form.save(commit=False)
@@ -39,10 +41,16 @@ def register(request):
             new_user.save()
             return render(request,
                           'registration/register_done.html',
-                          {'new_user': new_user})
+                          locals())
+
+        if form.is_valid():
+            product = form.cleaned_data['research']
+            return redirect('/' + product + '/')
+
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'registration/register.html', {'user_form': user_form })
+        form = SearchForm()
+    return render(request, 'registration/register.html', locals())
 
 
 def user_login(request):
@@ -50,9 +58,10 @@ def user_login(request):
     User login management
     """
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
+        login_form = LoginForm(request.POST)
+        form = SearchForm(request.POST)
+        if login_form.is_valid():
+            cd = login_form.cleaned_data
             user = authenticate(request, username=cd['username'], password=cd['password'])
             if user is not None:
                 if user.is_active:
@@ -60,9 +69,13 @@ def user_login(request):
                     return HttpResponseRedirect('../')
             else:
                 return HttpResponse('Invalid login')
+        if form.is_valid():
+            product = form.cleaned_data['research']
+            return redirect('/' + product + '/')
     else:
-        form = LoginForm()
-    return render(request, 'registration/login.html', {'form': form })
+        login_form = LoginForm()
+        form = SearchForm(request.POST)
+    return render(request, 'registration/login.html', locals())
 
 
 @login_required
@@ -76,7 +89,7 @@ def account(request):
         return redirect('search_results/' + prod + '/')
     else:
         form = SearchForm()
-    return render(request, 'registration/account.html', {'form': form })
+    return render(request, 'registration/account.html', locals())
 
 
 def legal_information(request):
@@ -84,7 +97,7 @@ def legal_information(request):
     Display legal information about the website
     """
     form = SearchForm(request.POST)
-    return render(request, 'legal_information.html', {'form': form })
+    return render(request, 'legal_information.html', locals())
 
 
 def search_results(request, product):
@@ -103,16 +116,17 @@ def search_results(request, product):
         SearchForm()
     product_list = Products.objects.filter(nutriscore__range=('d', 'e'), name__icontains=product)
 
-    for item in product_list:
-        favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
-        if favorites :
-            item.is_favorite = True
-        else:
-            item.is_favorite = False
+    try:
+        for item in product_list:
+            favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
+            if favorites :
+                item.is_favorite = True
+            else:
+                item.is_favorite = False
+    except User.DoesNotExist:
+        pass
 
-    return render(request, 'purbeurre/search_results.html', {
-                                                             'form': form,
-                                                             'product_list': product_list })
+    return render(request, 'purbeurre/search_results.html',locals())
 
 
 @login_required
@@ -150,10 +164,8 @@ def saved_products(request):
         favorite = Products.objects.get(name=i.substitute)
         list_favorites.append(favorite)
 
-    return render(request, 'purbeurre/saved_products.html', {'list_favorites':list_favorites,
-                                                             'form': form
+    return render(request, 'purbeurre/saved_products.html', locals())
 
-                                                             })
 @login_required
 def delete_saved_product(request):
     """
@@ -186,17 +198,17 @@ def search_substitutes(request, product):
     research = Products.objects.get(name=product)
     product_list = Products.objects.filter(nutriscore__range=('a', 'c'), category=research.category)
 
-    for item in product_list:
-        favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
-        if favorites :
-            item.is_favorite = True
-        else:
-            item.is_favorite = False
+    try:
+        for item in product_list:
+            favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
+            if favorites :
+                item.is_favorite = True
+            else:
+                item.is_favorite = False
+    except User.DoesNotExist:
+        pass
 
-
-    return render(request, 'purbeurre/substitutes.html', {'product_list': product_list,
-                                                          'research':research,
-                                                          'form': form })
+    return render(request, 'purbeurre/substitutes.html', locals())
 
 
 def product_description(request, product):

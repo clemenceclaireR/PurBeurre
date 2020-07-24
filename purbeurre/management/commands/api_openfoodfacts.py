@@ -13,7 +13,7 @@ from django.db.utils import IntegrityError
 
 class APIInformation:
     """
-    Constants necessary in order to use the OpenFoodFacts's API
+    Parameters needed in order to use the OpenFoodFacts's API
     """
     PRODUCTS_LINK = "https://fr.openfoodfacts.org/cgi/search.pl?"
     PARAMETERS = {
@@ -26,18 +26,19 @@ class APIInformation:
         "page_size": 100,
         "json": '1',
     }
-    PAGE_MIN = 1
-    PAGE_MAX = 20
     NUTRISCORE = ['A', 'B', 'C', 'D', 'E']
     CATEGORIES = [
         "Snacks salés",
-        "Plats préparés",
         "Produits à tartiner salés",
-        "Produits à tartiner sucrés",
-        "Biscuits et Gâteaux",
+        "Pâtes à tartiner aux noisettes",
+        "Biscuits au chocolat",
+        "Biscuits apéritifs",
+        "Biscuits sablés",
+        "Biscuits fourrés",
+        "Biscuits secs",
+        "Biscuits au chocolat au lait",
         "Fromages",
         "Confitures",
-        "Petit-déjeuner",
         "Chocolats",
         "Viennoiserie",
         "Dessert glacés",
@@ -48,12 +49,22 @@ class APIInformation:
 
 
 class Command(BaseCommand):
+    """
+    Get Openfoodfacts products in project database
+    """
 
     def get_categories(self, categories):
+        """
+        Get categories by name inserted in parameter
+        """
         category, created = Categories.objects.get_or_create(name=categories)
         category.save()
 
     def get_products(self, data, category):
+        """
+        Get products filtering needed product information and
+        tie it to a category
+        """
         for product_information in data['products']:
             name = product_information.get('product_name', None)
             category = Categories.objects.get(name=category)
@@ -88,6 +99,11 @@ class Command(BaseCommand):
                     continue
 
     def handle(self, *args, **options):
+        """
+        Loop open list of categories and create it,
+        then get products through request and return json response
+        which will be parsed
+        """
         for category in APIInformation.CATEGORIES:
             self.get_categories(category)
             APIInformation.PARAMETERS['tag_0'] = category

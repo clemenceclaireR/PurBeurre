@@ -3,52 +3,44 @@
 
 {% block title %}Connexion{% endblock %}
 
-
 {% block content %}
-<div id="content" class="background">
-<header class="masthead">
-<div class="container">
-     <div class="col-xl-12 col-lg-12 col-md-9">
-        <!-- Outer Row -->
-    <!--<div class="row justify-content-center" style="padding-block-end: 350px;">-->
 
+<div id="content" class="background">
+  <header class="masthead">
+    <div class="container">
+      <div class="col-xl-12 col-lg-12 col-md-9">
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
             <div class="row">
-                <div class="col-lg-6 bg-login-image d-none d-lg-block"></div>
-              <div class="col-lg-6">
-                <div class="p-5">
+              <div class="col-lg-6 bg-login-image d-none d-lg-block"></div>
+                <div class="col-lg-6">
+                  <div class="p-5">
+                    <div class="row">
+                      <div class="col-lg-7 mx-auto">
+                        <h2 class="">Se connecter </h2>
+                          {% if form.errors %}
+                            <p>Votre identifiant ou votre mot de passe est erroné.</p>
+                          {% else %}
+                            <p>Entrez vos identifiants</p>
+                          {% endif %}
 
-        <div class="row">
-                <div class="col-lg-7 mx-auto">
-                    <h2 class="">Se connecter </h2>
-
-{% if form.errors %}
-<p>Votre identifiant ou votre mot de passe est erroné.</p>
-{% else %}
-<p>Entrez vos identifiants</p>
-{% endif %}
-<div class="">
-<form action="{% url 'login' %}" method="post">
-{{ form.as_p }}
-{% csrf_token %}
-<input type="hidden" name="next" value="{{ next }}" />
-<p><input type="submit" value="Connexion" class="btn btn-primary btn-user btn-block"></p>
-</form>
-</div>
-
-    </div>
-
-              </div>
+                          <div>
+                            <form action="{% url 'login' %}" method="post">
+                              {{ login_form.as_p }}
+                              {% csrf_token %}
+                              <p><input type="submit" value="Connexion" class="btn btn-primary btn-user btn-block"></p>
+                            </form>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
       </div>
-        </div>
-     </div>
-</div>
-</header>
+    </div>
+  </header>
 </div>
 
 
