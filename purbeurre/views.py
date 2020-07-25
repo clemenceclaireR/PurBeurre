@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, LoginForm, SearchForm
+from django.contrib import messages
+from .forms import SearchForm
+from .utils import handle_search_form
+from user.forms import UserRegistrationForm, LoginForm
 from .models.products import Products
 from .models.favorites import Favorites
 from django.contrib.auth.models import User
@@ -23,59 +26,6 @@ def index(request):
     else:
         form = SearchForm()
     return render(request, 'index.html', locals())
-
-
-def register(request):
-    """
-    Register a user account
-    """
-    form = SearchForm(request.POST)
-
-    if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        form = SearchForm(request.POST)
-
-        if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password'])
-            new_user.save()
-            return render(request,
-                          'registration/register_done.html',
-                          locals())
-
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
-
-    else:
-        user_form = UserRegistrationForm()
-        form = SearchForm()
-    return render(request, 'registration/register.html', locals())
-
-
-def user_login(request):
-    """
-    User login management
-    """
-    if request.method == 'POST':
-        login_form = LoginForm(request.POST)
-        form = SearchForm(request.POST)
-        if login_form.is_valid():
-            cd = login_form.cleaned_data
-            user = authenticate(request, username=cd['username'], password=cd['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect('../')
-            else:
-                return HttpResponse('Invalid login')
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
-    else:
-        login_form = LoginForm()
-        form = SearchForm(request.POST)
-    return render(request, 'registration/login.html', locals())
 
 
 @login_required
@@ -114,7 +64,8 @@ def search_results(request, product):
             SearchForm()
     else:
         SearchForm()
-    product_list = Products.objects.filter(nutriscore__range=('d', 'e'), name__icontains=product)
+    product_list = Products.objects.filter\
+        (nutriscore__range=('d', 'e'), name__icontains=product)
 
     try:
         for item in product_list:
@@ -142,13 +93,11 @@ def save_product(request, product):
 
     # verify if this product is already saved by the user and tag it as favorite in Products table
         product = Favorites.objects.filter(substitute=product_to_save, user=User.objects.get(id=current_user.id))
-    # TODO : list is_favorite
-        #product_to_save.is_favorite = True
-        #product_to_save.save()
         if not product:
             validated_product = Favorites(substitute=product_to_save, user=User.objects.get(id=current_user.id))
             validated_product.save()
-    return redirect(request.META['HTTP_REFERER'])
+            message = messages.add_message(request, messages.SUCCESS, 'Produit sauvegardé', fail_silently=True)
+    return redirect(request.META['HTTP_REFERER'], locals())
 
 
 @login_required
@@ -176,9 +125,9 @@ def delete_saved_product(request):
         prod_to_delete = Products.objects.get(name=prod_name)
         current_user = request.user
         Favorites.objects.get(substitute=prod_to_delete, user=current_user.id).delete()
-        return render(request, 'purbeurre/delete_saved_product.html', locals())
-
-    return render(request, 'purbeurre/delete_saved_product.html', locals())
+        message = messages.add_message(request, messages.SUCCESS, 'Produit supprimé', fail_silently=True)
+        return redirect('/saved_products', locals())
+    return render(request, 'purbeurre/saved_products.html', locals())
 
 
 def search_substitutes(request, product):

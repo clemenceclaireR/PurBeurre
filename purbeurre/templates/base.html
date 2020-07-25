@@ -117,5 +117,14 @@
     <!-- Core theme JS-->
    <script src="{% static 'js/scripts.js' %}"></script>
 
+  <!-- remove the message after 2 seconds -->
+   <script>
+    setTimeout(function(){
+      if ($('#msg').length > 0) {
+        $('#msg').remove();
+      }
+    }, 2000)
+  </script>
+
 </body>
 </html>

@@ -1,5 +1,6 @@
 from django.test import TestCase
-from purbeurre.forms import SearchForm, UserRegistrationForm
+from purbeurre.forms import SearchForm
+from user.forms import UserRegistrationForm
 from django.contrib.auth.models import User
 
 

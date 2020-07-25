@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from purbeurre.forms import UserRegistrationForm
+from user.forms import UserRegistrationForm
 from django import forms
 
 

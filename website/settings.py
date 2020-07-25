@@ -53,7 +53,7 @@ else:
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'purbeurre.authentication.EmailAuthBackend',
+    'user.authentication.EmailAuthBackend',
 ]
 
 
@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'purbeurre',
+    'user',
     'tests',
     'debug_toolbar',
 ]
