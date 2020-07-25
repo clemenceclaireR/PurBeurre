@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm
 from purbeurre.forms import SearchForm
-from purbeurre.models.products import Products
-from purbeurre.models.favorites import Favorites
-from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from django.contrib import messages
 
 
 def register(request):

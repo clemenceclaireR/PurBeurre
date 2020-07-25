@@ -15,6 +15,7 @@ import json
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
 import sys
+from django.contrib.messages import constants as messages
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -90,6 +91,14 @@ INSTALLED_APPS = [
     'debug_toolbar',
 ]
 
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -134,8 +143,8 @@ if not os.environ.get('ENV') == 'PRODUCTION':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'purbeurre',
-            'USER': 'postgres',
+            'NAME': get_secret('DB_NAME'),
+            'USER': get_secret('DB_USER'),
             'PASSWORD': get_secret('DB_PASSWORD'),
             'HOST': os.environ.get('SQL_HOST', 'localhost'),
             'PORT': os.environ.get('SQL_PORT', '5432'),

@@ -6,10 +6,19 @@
 <!--{% endfor %}-->
 <!--{% endif %}-->
 
-{% if messages %}
-<ul class="messages" id="msg">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+<!--{% if messages %}-->
+<!--<ul class="messages" id="msg">-->
+<!--    {% for message in messages %}-->
+<!--    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+<!--{% endif %}-->
+
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" id="msg" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
