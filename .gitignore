@@ -19,4 +19,4 @@ htmlcov/
 /.coveragerc
 
 # data
-dump/data.json
+# dump/data.json
