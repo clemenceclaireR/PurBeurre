@@ -6,10 +6,12 @@ from user.forms import UserRegistrationForm, LoginForm
 from .models.products import Products
 from .models.favorites import Favorites
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, \
+                        HttpRequest, JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
@@ -64,20 +66,26 @@ def search_results(request, product):
             SearchForm()
     else:
         SearchForm()
-    product_list = Products.objects.filter\
-        (nutriscore__range=('d', 'e'), name__icontains=product)
 
+    product_list = Products.objects.filter \
+        (name__icontains=product)
+
+    # for each product to display, check if the user added it to its favs
+    # in order to display whether the product has already been saved or not
     try:
         for item in product_list:
-            favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
+            favorites = Favorites.objects.filter(user=User.objects.get
+                                                (id=current_user.id),
+                                                 substitute=item.id)
             if favorites :
                 item.is_favorite = True
             else:
                 item.is_favorite = False
+
     except User.DoesNotExist:
         pass
 
-    return render(request, 'purbeurre/search_results.html',locals())
+    return render(request, 'purbeurre/search_results.html', locals())
 
 
 @login_required
@@ -91,12 +99,19 @@ def save_product(request, product):
 
     if request.method == 'POST':
 
-    # verify if this product is already saved by the user and tag it as favorite in Products table
-        product = Favorites.objects.filter(substitute=product_to_save, user=User.objects.get(id=current_user.id))
+    # verify if this product is already saved by the user and tag it as
+    # favorite in Products table
+        product = Favorites.objects.filter(substitute=product_to_save,
+                                           user=User.objects.get
+                                           (id=current_user.id))
         if not product:
-            validated_product = Favorites(substitute=product_to_save, user=User.objects.get(id=current_user.id))
+            validated_product = Favorites(substitute=product_to_save,
+                                          user=User.objects.get
+                                          (id=current_user.id))
             validated_product.save()
-            message = messages.add_message(request, messages.SUCCESS, 'Produit sauvegardé', fail_silently=True)
+            message = messages.add_message(request, messages.SUCCESS,
+                                           'Produit sauvegardé',
+                                           fail_silently=True)
     return redirect(request.META['HTTP_REFERER'], locals())
 
 
@@ -109,6 +124,7 @@ def saved_products(request):
     current_user = request.user
     favorites = Favorites.objects.filter(user=current_user.id)
     list_favorites = []
+    # for each product saved by a user, added it to list in order to display it
     for i in favorites:
         favorite = Products.objects.get(name=i.substitute)
         list_favorites.append(favorite)
@@ -124,8 +140,11 @@ def delete_saved_product(request):
         prod_name = request.POST.get('delete_product')
         prod_to_delete = Products.objects.get(name=prod_name)
         current_user = request.user
-        Favorites.objects.get(substitute=prod_to_delete, user=current_user.id).delete()
-        message = messages.add_message(request, messages.SUCCESS, 'Produit supprimé', fail_silently=True)
+        # delete the product from favorites table for the user, display success message
+        Favorites.objects.get(substitute=prod_to_delete,
+                              user=current_user.id).delete()
+        message = messages.add_message(request, messages.SUCCESS, 'Produit supprimé',
+                                       fail_silently=True)
         return redirect('/saved_products', locals())
     return render(request, 'purbeurre/saved_products.html', locals())
 
@@ -144,12 +163,23 @@ def search_substitutes(request, product):
             SearchForm()
     else:
         SearchForm()
-    research = Products.objects.get(name=product)
-    product_list = Products.objects.filter(nutriscore__range=('a', 'c'), category=research.category)
 
+    page = request.GET.get('page', 1)
+    research = Products.objects.get(name=product)
+    # filter product from the same category with better nutriscore
+    nutriscore_scale =  list(('a', 'b', 'c', 'd', 'e'))
+    index = nutriscore_scale.index(research.nutriscore)
+    better_nutriscore = nutriscore_scale[:index]
+    product_list = Products.objects.filter(nutriscore__in=better_nutriscore,
+                                           category=research.category)
+
+    # for each product to display, check if the user added it to its favs
+    # in order to display whether the product has already been saved or not
     try:
         for item in product_list:
-            favorites = Favorites.objects.filter(user=User.objects.get(id=current_user.id), substitute=item.id)
+            favorites = Favorites.objects.filter(user=User.objects.get
+                                                (id=current_user.id),
+                                                 substitute=item.id)
             if favorites :
                 item.is_favorite = True
             else:
@@ -158,6 +188,7 @@ def search_substitutes(request, product):
         pass
 
     return render(request, 'purbeurre/substitutes.html', locals())
+
 
 
 def product_description(request, product):

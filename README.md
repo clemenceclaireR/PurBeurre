@@ -6,7 +6,11 @@ This is the 8th project which has been developed for Openclassrooms.
 
 #### **What does it do?**
 
-[COMPLETE]
+It's a food substitute finder. Search for a product you like, and it will
+display the same kind of products but with a better nutriscore.
+If you're logged in, you can save the products which will retain 
+your attention and browse it later in your saved products section.
+You can of course 
 
 #### **How to use ?** 
 
@@ -41,13 +45,13 @@ Install on windows : Download here => https://bootstrap.pypa.io/get-pip.py
 
 
 
-###Depencies
+### Depencies
 Install the dependencies with :
 
 
      pip install requirements.txt
 
-###Environment
+### Environment
 Configure your environment variable for this project. You'll need : 
 
 ***If production***
@@ -88,7 +92,7 @@ Install on MacOS : Download here => https://www.postgresql.org/download/macosx/
 On your postgres server, create a database named "purbeurre" and a user
 named "postgres".
 
-###Run Migrations
+### Run Migrations
 
 In order to create the tables, run the following commands :
 
@@ -96,11 +100,11 @@ In order to create the tables, run the following commands :
     python manage.py makemigrations
     python manage.py migrate
     
-###Populate the database
+### Populate the database
 
     python manage.py api_openfoodfacts
 
-###Launching
+### Launching
 - Run the following commands in your terminal :
 
 
@@ -108,7 +112,7 @@ In order to create the tables, run the following commands :
 - Launch you web browser and go to the local server, _127.0.0.1:8000_ by default
 
 
-###Testing with django test library
+### Testing with django test library
 
 In order to run the tests, do like so :
 - Go the the project's root in your terminal

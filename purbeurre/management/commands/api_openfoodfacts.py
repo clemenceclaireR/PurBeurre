@@ -67,6 +67,11 @@ class Command(BaseCommand):
         """
         for product_information in data['products']:
             name = product_information.get('product_name', None)
+            # in order to remove linebreak from product name
+            print("WITH LINEBREAK : ", repr(name))
+            if name:
+                name = name.replace('\n','')
+                print("WITHOUT LINEBREAK : ", repr(name))
             category = Categories.objects.get(name=category)
             nutriscore = product_information.get('nutrition_grades', None)
             link = product_information.get('url', None)
@@ -83,7 +88,7 @@ class Command(BaseCommand):
             else:
                 try:
                     product, created = Products.objects.get_or_create(
-                        name=name,
+                        name=str(name),
                         category=category,
                         nutriscore=nutriscore,
                         link=link,
@@ -91,8 +96,12 @@ class Command(BaseCommand):
                         nutrition_image=nutrition_image,
                     )
                     if created:
+                        # if \n product, ''
+                        # product.name.replace("\n", "")
                         product.save()
-                        print(product.name)
+                        # print(product.name)
+
+
                 except Products.DoesNotExist:
                     raise CommandError("Products %s could not been reached" % name)
                 except IntegrityError:

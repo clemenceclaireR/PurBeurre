@@ -16,7 +16,7 @@
 </div>
 
 {% if not product_list %}
-<h3>Désolé, nous n'avons pas trouvé de substitut</h3>
+<h3 class="text-center page-section">Désolé, nous n'avons pas trouvé de substitut plus sain.</h3>
 
 {% else %}
 <div class="text-center active_padding">
@@ -26,7 +26,7 @@
 <ul class="align-items-center align-content-center">
 {% for product in product_list %}
 
-  <div class="row">
+  <div class="row limit_width_size">
     <li class="top-buffer offset-xs-1 col-xs-11 offset-sm-1 col-sm-5 offset-md-1 col-md-3  offset-lg-1 col-lg-3
         align-items-center product_block">
       <div class="row">
