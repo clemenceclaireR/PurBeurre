@@ -24,7 +24,7 @@
 </div>
 
 <ul class="justify-content-center align-items-center">
-{% for product in list_favorites %}
+{% for product in products %}
 
     <div class="row limit_width_size">
         <li class="top-buffer col-xs-11 offset-xs-1 col-sm-5 offset-sm-1 col-md-3 offset-md-1  col-lg-3 offset-lg-1
@@ -79,6 +79,10 @@
         </li>
     </div>
 </ul>
+
+    <div class="row justify-content-center">
+{% include "pagination.html" with page=products %}
+    </div>
 
 
 {% endif %}

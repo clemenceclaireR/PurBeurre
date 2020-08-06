@@ -1,19 +1,27 @@
+#! usr/bin/env python3
+# -*- Coding: UTF-8 -*-
+
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.contrib.auth.forms import UsernameField
 
 
 class LoginForm(forms.Form):
     """
     Login form
     """
-    username = UsernameField(label="", widget=forms.TextInput(attrs={'autofocus': True,
-                                                           'class': "form-control form-control-user",
-                                                           'placeholder': "Nom d'utilisateur"}))
-    password = forms.CharField(label="", strip=False,
-                               widget=forms.PasswordInput(attrs={'autocomplete': 'current-password',
-                                                                 'class': "form-control form-control-user",
-                                                                 'placeholder': "Mot de passe"}), )
+    username = UsernameField(label="",
+                             widget=forms.TextInput
+                             (attrs={'autofocus': True,
+                                     'class': "form-control form-control-user",
+                                     'placeholder': "Nom d'utilisateur"}))
+    password = forms.CharField(label="",
+                               strip=False,
+                               widget=forms.PasswordInput
+                               (attrs=
+                                {'autocomplete': 'current-password',
+                                 'class': "form-control form-control-user",
+                                 'placeholder': "Mot de passe"}))
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -25,43 +33,53 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
 
-    username = UsernameField(label="", widget=forms.TextInput(attrs={'autofocus': True,
-                                                                     'placeholder': "Nom d'utilisateur",
-                                                                     'class': "form-control form-control-user",
-                                                                     'id': "exampleInputEmail"
-                                                                     }))
-    first_name = forms.CharField(label='', widget=forms.TextInput(attrs={
-                                                                     'placeholder': "Prénom",
-                                                                     'class': "form-control form-control-user",
-                                                                     'id': "exampleInputEmail"
-                                                                     }))
-    last_name = forms.CharField(label='', widget=forms.TextInput(attrs={
-                                                                     'placeholder': "Nom",
-                                                                     'class': "form-control form-control-user",
-                                                                     'id': "exampleInputEmail"
-                                                                     }))
-
+    username = UsernameField(label="",
+                             widget=forms.TextInput
+                             (attrs=
+                              {'autofocus': True,
+                               'placeholder': "Nom d'utilisateur",
+                               'class': "form-control form-control-user",
+                               'id': "exampleInputEmail"}))
+    first_name = forms.CharField(label='',
+                                 widget=forms.TextInput
+                                 (attrs=
+                                  {'placeholder': "Prénom",
+                                   'class': "form-control form-control-user",
+                                   'id': "exampleInputEmail"}))
+    last_name = forms.CharField(label='',
+                                widget=forms.TextInput
+                                (attrs=
+                                 {'placeholder': "Nom",
+                                  'class': "form-control form-control-user",
+                                  'id': "exampleInputEmail"}))
     password = forms.CharField(label='',
                                strip=False,
-                               widget=forms.PasswordInput(attrs={'placeholder': "Mot de passe",
-                                                                 'class': "form-control form-control-user",
-                                                                 'id':"exampleInputEmail"}),)
+                               widget=forms.PasswordInput
+                               (attrs=
+                                {'placeholder': "Mot de passe",
+                                 'class': "form-control form-control-user",
+                                 'id':"exampleInputEmail"}))
     password2 = forms.CharField(label='',
-                                widget=forms.PasswordInput(attrs={'placeholder': "Répétez votre mot de passe",
-                                                                  'class': "form-control form-control-user",
-                                                                  'id': "exampleInputEmail"}), )
-    email = forms.EmailField(label="", required=True, widget=forms.TextInput(attrs={
-                                                                     'placeholder': "Adresse e-mail",
-                                                                     'class': "form-control form-control-user",
-                                                                     'id': "exampleInputEmail"
-                                                                     }),)
+                                widget=forms.PasswordInput
+                                (attrs=
+                                 {'placeholder': "Répétez votre mot de passe",
+                                  'class': "form-control form-control-user",
+                                  'id': "exampleInputEmail"}))
+    email = forms.EmailField(label="",
+                             required=True,
+                             widget=forms.TextInput
+                             (attrs=
+                              {'placeholder': "Adresse e-mail",
+                               'class': "form-control form-control-user",
+                               'id': "exampleInputEmail"}))
 
     def clean_email(self):
         """
         Check if e-mail is already used
         """
         if User.objects.filter(email=self.cleaned_data['email']).exists():
-            raise forms.ValidationError("This email address is already registered")
+            raise forms.ValidationError("This email address is "
+                                        "already registered")
         return self.cleaned_data['email']
 
     def clean_password2(self):

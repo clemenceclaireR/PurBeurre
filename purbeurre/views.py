@@ -1,17 +1,16 @@
+#! usr/bin/env python3
+# -*- Coding: UTF-8 -*-
+
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
 from .utils import handle_search_form
-from user.forms import UserRegistrationForm, LoginForm
 from .models.products import Products
 from .models.favorites import Favorites
-from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect, \
-                        HttpRequest, JsonResponse
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.views.generic import View
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
@@ -21,27 +20,11 @@ def index(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            prod = form.cleaned_data['research']
-            return redirect('search_results/' + prod + '/')
-        else:
-            form = SearchForm()
+            product = form.cleaned_data['research']
+            return redirect('search_results/' + product + '/')
     else:
         form = SearchForm()
     return render(request, 'index.html', locals())
-
-
-@login_required
-def account(request):
-    """
-    Display user account page
-    """
-    form = SearchForm(request.POST)
-    if form.is_valid():
-        prod = form.cleaned_data['research']
-        return redirect('search_results/' + prod + '/')
-    else:
-        form = SearchForm()
-    return render(request, 'registration/account.html', locals())
 
 
 def legal_information(request):
@@ -60,30 +43,39 @@ def search_results(request, product):
     current_user = request.user
     if request.method == 'POST':
         if form.is_valid():
-            product= form.cleaned_data['research']
+            product = form.cleaned_data['research']
             return redirect('/' + product + '/')
-        else:
-            SearchForm()
     else:
         SearchForm()
 
-    product_list = Products.objects.filter \
-        (name__icontains=product)
+    product_list = Products.objects.\
+        filter(name__icontains=product).select_related()
 
-    # for each product to display, check if the user added it to its favs
-    # in order to display whether the product has already been saved or not
+    # if user is authenticated, get his favorites, else, pass
     try:
-        for item in product_list:
-            favorites = Favorites.objects.filter(user=User.objects.get
-                                                (id=current_user.id),
-                                                 substitute=item.id)
-            if favorites :
+        total_favorites = Favorites.objects.filter(user=User.objects.get
+                                                   (id=current_user.id))\
+                                                   .select_related()
+        for item in product_list.iterator():
+            favorites = total_favorites.filter(substitute=item.id)
+            if favorites:
                 item.is_favorite = True
             else:
                 item.is_favorite = False
 
     except User.DoesNotExist:
         pass
+
+    paginator = Paginator(product_list, 9)  # 9 products in each page
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        products = paginator.page(paginator.num_pages)
 
     return render(request, 'purbeurre/search_results.html', locals())
 
@@ -99,8 +91,8 @@ def save_product(request, product):
 
     if request.method == 'POST':
 
-    # verify if this product is already saved by the user and tag it as
-    # favorite in Products table
+        # verify if this product is already saved by the user and tag it as
+        # favorite in Products table
         product = Favorites.objects.filter(substitute=product_to_save,
                                            user=User.objects.get
                                            (id=current_user.id))
@@ -129,7 +121,19 @@ def saved_products(request):
         favorite = Products.objects.get(name=i.substitute)
         list_favorites.append(favorite)
 
+    paginator = Paginator(list_favorites, 9)  # 9 products in each page
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        products = paginator.page(paginator.num_pages)
+
     return render(request, 'purbeurre/saved_products.html', locals())
+
 
 @login_required
 def delete_saved_product(request):
@@ -140,10 +144,12 @@ def delete_saved_product(request):
         prod_name = request.POST.get('delete_product')
         prod_to_delete = Products.objects.get(name=prod_name)
         current_user = request.user
-        # delete the product from favorites table for the user, display success message
+        # delete the product from favorites table for the user,
+        # display success message
         Favorites.objects.get(substitute=prod_to_delete,
                               user=current_user.id).delete()
-        message = messages.add_message(request, messages.SUCCESS, 'Produit supprimé',
+        message = messages.add_message(request, messages.SUCCESS,
+                                       'Produit supprimé',
                                        fail_silently=True)
         return redirect('/saved_products', locals())
     return render(request, 'purbeurre/saved_products.html', locals())
@@ -159,36 +165,45 @@ def search_substitutes(request, product):
         if form.is_valid():
             product = form.cleaned_data['research']
             return redirect('/' + product + '/')
-        else:
-            SearchForm()
     else:
         SearchForm()
 
     page = request.GET.get('page', 1)
     research = Products.objects.get(name=product)
     # filter product from the same category with better nutriscore
-    nutriscore_scale =  list(('a', 'b', 'c', 'd', 'e'))
+    nutriscore_scale = list(('a', 'b', 'c', 'd', 'e'))
     index = nutriscore_scale.index(research.nutriscore)
     better_nutriscore = nutriscore_scale[:index]
     product_list = Products.objects.filter(nutriscore__in=better_nutriscore,
                                            category=research.category)
-
-    # for each product to display, check if the user added it to its favs
-    # in order to display whether the product has already been saved or not
+    # if user is authenticated, get his favorites, else, pass
     try:
-        for item in product_list:
-            favorites = Favorites.objects.filter(user=User.objects.get
-                                                (id=current_user.id),
-                                                 substitute=item.id)
-            if favorites :
+        # for each product to display, check if the user added it to its favs
+        # in order to display whether the product has already been saved or not
+        total_favorites = Favorites.objects.filter(user=User.objects.get
+                                                   (id=current_user.id))
+        for item in product_list.iterator():
+            favorites = total_favorites.filter(substitute=item.id)
+            if favorites:
                 item.is_favorite = True
             else:
                 item.is_favorite = False
     except User.DoesNotExist:
         pass
 
-    return render(request, 'purbeurre/substitutes.html', locals())
+    # paginate
+    paginator = Paginator(product_list, 9)  # 9 products in each page
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        products = paginator.page(paginator.num_pages)
 
+    return render(request, 'purbeurre/substitutes.html', locals())
 
 
 def product_description(request, product):
@@ -202,10 +217,7 @@ def product_description(request, product):
         if form.is_valid():
             product = form.cleaned_data['research']
             return redirect('/' + product + '/')
-        else:
-            SearchForm()
     else:
         SearchForm()
     product_description = Products.objects.get(name=product)
     return render(request, 'purbeurre/product_page.html', locals())
-

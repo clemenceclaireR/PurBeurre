@@ -6,7 +6,7 @@ This is the 8th project which has been developed for Openclassrooms.
 
 #### **What does it do?**
 
-It's a food substitute finder. Search for a product you like, and it will
+It is a food substitute finder. Search for a product you like, and it will
 display the same kind of products but with a better nutriscore.
 If you're logged in, you can save the products which will retain 
 your attention and browse it later in your saved products section.

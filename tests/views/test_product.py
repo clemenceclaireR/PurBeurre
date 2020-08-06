@@ -1,60 +1,82 @@
+#! usr/bin/env python3
+# -*- Coding: UTF-8 -*-
+
 from django.test import TestCase
-from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
 from purbeurre.forms import SearchForm
-from purbeurre.models import Favorites, Products, Categories
+from purbeurre.models.products import Products
+from purbeurre.models.categories import Categories
+from purbeurre.models.favorites import Favorites
+
 
 class ProductViewTest(TestCase):
     """
     Views test for the search results page and the product description page
     """
     def setUp(self):
-        # init user for login
         self.new_user = User.objects.create_user(id=1, username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
-        self.product = Products.objects.create(id=1, name='nutella', nutriscore='d', link="http://test.test.fr",
-                                            image="path/to/image", category=Categories.objects.get(name=self.category))
+        self.product = Products.objects.create(id=1, name='nutella',
+                                               nutriscore='d',
+                                               link="http://test.test.fr",
+                                               image="path/to/image",
+                                               category=Categories.objects.get
+                                               (name=self.category))
 
+        self.product2 = Products.objects.create(id=2, name='nutella bio',
+                            nutriscore='d',
+                            link="http://test.test.fr",
+                            image="path/to/image",
+                            category=Categories.objects.get
+                            (name=self.category))
+        self.favorite = Favorites.objects.create(user=User.objects.get(id=1),
+                             substitute=Products.objects.get
+                             (name="nutella bio"))
 
-    def test_search_form(self):
-        form_data = {'research': 'something'}
-        form = SearchForm(data=form_data)
-        self.assertTrue(form.is_valid())
-
-
-    def test_post_search_form_is_valid(self) :
+    def test_post_search_form_is_valid(self):
+        """
+        Search form works from results page
+        """
         response = self.client.post('/search_results/product/', {
             'research': 'nutella'
         })
         self.assertEqual(response.status_code, 302)
 
     def test_view_url_exists_at_desired_location(self):
+        """
+        Results page is accessible with url name
+        """
+        response = self.client.get('/search_results/nutella/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_propose_product_already_in_favorites(self):
+        """
+        One of the products displayed is in user's favorites
+        """
         self.client.login(username='test', password='test')
         response = self.client.get('/search_results/nutella/')
         self.assertEqual(response.status_code, 200)
 
-
-    def test_post_search_form_empty(self) :
-        response = self.client.post('/search_results/product/', {
-            'research': ''
-        })
-        self.assertEqual(response.status_code, 200)
+    def test_view_returns_last_page_if_id_page_out_of_range(self):
+        """
+        View return last page if page number given is out o range
+        """
+        response = self.client.get('/search_results/nutella/',
+                                   {'query': '', 'page': 5})
+        self.assertEquals(response.context['products'].number, 1)
 
     def test_post_form_from_product_details_page(self):
+        """
+        Search form works from product description page
+        """
         response = self.client.post('/product_description/product/', {
             'research': 'product'
         })
         self.assertEqual(response.status_code, 302)
 
-    def test_post_form_empty_from_product_details_page(self):
-        response = self.client.post('/product_description/nutella/', {
-            'research': ''
-        })
-        self.assertEqual(response.status_code, 200)
-
     def test_view_product_description_page(self):
+        """
+        Product description page is accessible with url name
+        """
         response = self.client.get('/product_description/nutella/')
         self.assertEqual(response.status_code, 200)

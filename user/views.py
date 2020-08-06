@@ -1,11 +1,13 @@
+#! usr/bin/env python3
+# -*- Coding: UTF-8 -*-
+
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, LoginForm
-from purbeurre.forms import SearchForm
-from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
-from django.views.generic import View
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from purbeurre.forms import SearchForm
+from .forms import UserRegistrationForm, LoginForm
 
 
 def register(request):
@@ -45,10 +47,14 @@ def user_login(request):
         form = SearchForm(request.POST)
         if login_form.is_valid():
             cd = login_form.cleaned_data
-            user = authenticate(request, username=cd['username'], password=cd['password'])
+            user = authenticate(request, username=cd['username'],
+                                password=cd['password'])
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    message = messages.add_message(request, messages.SUCCESS,
+                                                   'Vous êtes désormais authentifié.',
+                                                   fail_silently=True)
                     return HttpResponseRedirect('../')
             else:
                 return HttpResponse('Invalid login')
@@ -59,3 +65,15 @@ def user_login(request):
         login_form = LoginForm()
         form = SearchForm(request.POST)
     return render(request, 'registration/login.html', locals())
+
+
+@login_required
+def account(request):
+    """
+    Display user account page
+    """
+    form = SearchForm(request.POST)
+    if form.is_valid():
+        product = form.cleaned_data['research']
+        return redirect('search_results/' + product + '/')
+    return render(request, 'registration/account.html', locals())

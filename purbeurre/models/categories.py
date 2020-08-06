@@ -1,5 +1,7 @@
-from django.db import models
+#! usr/bin/env python3
+# -*- Coding: UTF-8 -*-
 
+from django.db import models
 
 
 class Categories(models.Model):
@@ -9,7 +11,12 @@ class Categories(models.Model):
 
     class Meta:
         db_table = 'categories'
-    name = models.CharField(max_length=75, unique= True)
+        ordering = ['-id']
+
+    name = models.CharField(max_length=75,
+                            unique=True,
+                            verbose_name='Name',
+                            help_text='Name of the category')
 
     def __str__(self):
         return str(self.name)

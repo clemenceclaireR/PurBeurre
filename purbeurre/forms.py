@@ -1,6 +1,7 @@
+#! usr/bin/env python3
+# -*- Coding: UTF-8 -*-
+
 from django import forms
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 
 
 class SearchForm(forms.Form):
@@ -13,6 +14,3 @@ class SearchForm(forms.Form):
                                       'class': 'form-control ',
                                       'autocomplete': 'off'})
     )
-
-
-

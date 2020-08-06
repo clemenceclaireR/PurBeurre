@@ -2,13 +2,10 @@
 # -*- Coding: UTF-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db.utils import IntegrityError
+import requests
 from purbeurre.models.products import Products
 from purbeurre.models.categories import Categories
-from purbeurre.models.favorites import Favorites
-import requests
-import json
-from django.db.utils import IntegrityError
-
 
 
 class APIInformation:
@@ -68,15 +65,16 @@ class Command(BaseCommand):
         for product_information in data['products']:
             name = product_information.get('product_name', None)
             # in order to remove linebreak from product name
-            print("WITH LINEBREAK : ", repr(name))
+            # print("WITH LINEBREAK : ", repr(name))
             if name:
-                name = name.replace('\n','')
-                print("WITHOUT LINEBREAK : ", repr(name))
+                name = name.replace('\n', '')
+                # print("WITHOUT LINEBREAK : ", repr(name))
             category = Categories.objects.get(name=category)
             nutriscore = product_information.get('nutrition_grades', None)
             link = product_information.get('url', None)
             image = product_information.get('image_url', None)
-            nutrition_image = product_information.get('image_nutrition_url', None)
+            nutrition_image = product_information.get\
+                ('image_nutrition_url', None)
             if category is None \
                     or name is None \
                     or len(name) > 75 \
@@ -96,14 +94,12 @@ class Command(BaseCommand):
                         nutrition_image=nutrition_image,
                     )
                     if created:
-                        # if \n product, ''
-                        # product.name.replace("\n", "")
                         product.save()
-                        # print(product.name)
-
+                        print(product.name)
 
                 except Products.DoesNotExist:
-                    raise CommandError("Products %s could not been reached" % name)
+                    raise CommandError("Products %s could not been reached"
+                                       % name)
                 except IntegrityError:
                     continue
 
@@ -118,7 +114,8 @@ class Command(BaseCommand):
             APIInformation.PARAMETERS['tag_0'] = category
             for tag in APIInformation.NUTRISCORE:
                 APIInformation.PARAMETERS['tag_1'] = tag
-                response = requests.get(APIInformation.PRODUCTS_LINK, params=APIInformation.PARAMETERS)
+                response = requests.get(APIInformation.PRODUCTS_LINK,
+                                        params=APIInformation.PARAMETERS)
                 products = response.json()
 
                 self.get_products(products, category)

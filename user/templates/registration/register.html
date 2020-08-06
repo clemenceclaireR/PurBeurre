@@ -5,7 +5,6 @@
 
 {% block content %}
 
-{% if not  user.is_authenticated %}
 
 <div id="content" class="">
   <header class="masthead">
@@ -13,6 +12,7 @@
       <div class="col-xl-12 col-lg-12 col-md-9">
         <div class="card o-hidden border-0 shadow-lg my-5" >
           <div class="card-body p-0">
+            {% if not  user.is_authenticated %}
             <div class="row">
               <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
                 <div class="col-lg-7">
@@ -27,43 +27,21 @@
                     </form>
                     <hr>
                     <div class="text-center">
-                      <a href="{% url 'login' %}">Vous avez déjà un compte ? Connectez-vous</a>{{ check_failed_login }}
+                      <a href="{% url 'login' %}">Vous avez déjà un compte ? Connectez-vous</a>
                     </div>
                   </div>
                 </div>
               </div>
+                        {% else %}
+              <p class="text-center active_padding">Vous avez déjà un compte
+                auquel vous êtes actuellement connecté.</p>
+            {% endif %}
             </div>
           </div>
         </div>
       </div>
   </header>
 </div>
-
-{% else %}
-<div id="content" class="background">
-  <header class="masthead">
-    <div class="container">
-      <div class="col-xl-12 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5" >
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                <div class="col-lg-7">
-                  <div class="p-5">
-                    <div class="text-center">
-                      <h2 class="h4 text-gray-900 mb-4">Inscription</h2>
-                    </div>
-                      <p>Vous avez déjà un compte auquel vous êtes connecté.</p>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  </header>
-</div>
-{% endif %}
 
 
 {% endblock %}
