@@ -8,45 +8,47 @@
 {% include 'message.html' %}
 
 
-<div id="content" class="background">
-  <header class="masthead">
-    <div class="container">
-      <div class="col-xl-12 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            {% if not  user.is_authenticated %}
-            <div class="row">
-              <div class="col-lg-6 bg-login-image d-none d-lg-block"></div>
-                <div class="col-lg-6">
-                  <div class="p-5">
-                    <div class="row">
-                      <div class="col-lg-7 mx-auto">
-                          <h2 class="">Se connecter </h2>
-                            {% if form.errors %}
-                              <p>Votre identifiant ou votre mot de passe est erroné.</p>
-                            {% else %}
-                              <p>Entrez vos identifiants</p>
-                            {% endif %}
-                            <div>
-                              <form action="{% url 'login' %}" method="post">
-                                {{ login_form.as_p }}
-                                {% csrf_token %}
-                                <p><input type="submit" value="Connexion" class="btn btn-primary btn-user btn-block"></p>
-                              </form>
-                            </div>
+<div id="content" class="login_background">
+  <div class="text-center  text-white">
+    <h2 class="page-section">Connexion</h2>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-xl-12 col-lg-12 col-md-9">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        {% if not  user.is_authenticated %}
+        <div class="row">
+          <div class="col-lg-6 bg-login-image d-none d-lg-block"></div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="row">
+                  <div class="col-lg-7 mx-auto">
+                    <h2 class="">Se connecter </h2>
+                      {% if login_form.errors %}
+                        <p>Votre identifiant ou votre mot de passe est erroné.</p>
+                      {% else %}
+                        <p>Entrez vos identifiants</p>
+                      {% endif %}
+                        <div>
+                          <form action="{% url 'login' %}" method="post">
+                            {{ login_form.as_p }}
+                            {% csrf_token %}
+                            <p><input type="submit" value="Connexion" class="btn btn-primary btn-user btn-block"></p>
+                          </form>
                         </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
-                {% else %}
-                  <p class="text-center active_padding">Vous êtes déjà connecté.</p>
-                {% endif %}
+              </div>
             </div>
-          </div>
         </div>
+        {% else %}
+          <p class="text-center active_padding">Vous êtes déjà connecté.</p>
+        {% endif %}
       </div>
-    </header>
+    </div>
+  </div>
 </div>
 
 
