@@ -26,16 +26,25 @@ class ModelsTest(TestCase):
                                  user=User.objects.get(username=user))
 
     def test_category_label(self):
+        """
+        Checks field label name in Categories table
+        """
         category = Categories.objects.get(id=1)
         field_label = category._meta.get_field('name').verbose_name
         self.assertEqual(field_label, 'Name')
 
     def test_product_label(self):
+        """
+        Checks field label name in Products table
+        """
         product = Products.objects.get(id=1)
         field_label = product._meta.get_field('name').verbose_name
         self.assertEqual(field_label, 'Name')
 
     def test_favorite_fk(self):
+        """
+        Checks field label name in Favorites table
+        """
         favorites = Favorites.objects.get(id=1)
         field_fk = favorites._meta.get_field('substitute').verbose_name
         self.assertEqual(field_fk, 'Substitute')

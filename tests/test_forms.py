@@ -12,11 +12,17 @@ class SearchFormTest(TestCase):
     Form tests for search form
     """
 
-    def test_renew_form_date_field_label(self):
+    def test_field_label_name(self):
+        """
+        Checks field label name
+        """
         form = SearchForm()
         self.assertTrue(form.fields['research'].label == 'Recherche')
 
     def test_search_form(self):
+        """
+        Checks if search form is valid
+        """
         form_data = {'research': 'something'}
         form = SearchForm(data=form_data)
         self.assertTrue(form.is_valid())
@@ -38,5 +44,8 @@ class RegisterFormTest(TestCase):
         }
 
     def test_register_form(self):
+        """
+        Check if register form is valid
+        """
         form = UserRegistrationForm(data=self.data)
         self.assertTrue(form.is_valid())

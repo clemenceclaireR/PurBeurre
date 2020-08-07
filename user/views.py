@@ -47,7 +47,7 @@ def user_login(request):
         form = SearchForm(request.POST)
         if login_form.is_valid():
             cd = login_form.cleaned_data
-            user = authenticate(request, username=cd['username'],
+            user = authenticate(request, email=cd['email'],
                                 password=cd['password'])
             if user is not None:
                 if user.is_active:

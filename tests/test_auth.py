@@ -80,22 +80,34 @@ class UserRegistrationTest(TestCase):
         }
 
     def test_page_return_expected_html(self):
+        """
+        Register view uses register.html file
+        """
         response = self.client.get(reverse('register'))
         self.assertTemplateUsed(response, 'registration/register.html')
 
     def test_post_search_form_is_valid(self):
+        """
+        Search form works from register page
+        """
         response = self.client.post(reverse('register'), {
             'research': 'product'
         })
         self.assertEqual(response.status_code, 302)
 
     def test_register(self):
+        """
+        Add user when data posted is correct
+        """
         response = self.client.post(reverse("register"), data=self.data, follow=True,
                                     HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertEqual(User.objects.all().count(), 2)
         self.assertTrue(response.status_code, 200)
 
     def test_register_psw_dont_match(self):
+        """
+        Doesn't add user when password don't match in posted data
+        """
         response = self.client.post(reverse("register"), data={
             'username': 'test',
             'email': 'test@test.fr',
@@ -107,6 +119,9 @@ class UserRegistrationTest(TestCase):
         self.assertTrue(response.status_code, 200)
 
     def test_register_email_alrd_registered(self):
+        """
+        Doesn't add user when entered email in posted data is already register
+        """
         response = self.client.post(reverse("register"), data={
             'username': 'test',
             'email': 'user1@test.fr',
