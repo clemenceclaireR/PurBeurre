@@ -49,15 +49,15 @@ def search_results(request, product):
         SearchForm()
 
     product_list = Products.objects.\
-        filter(name__icontains=product).select_related()
-
+        filter(name__icontains=product)
     # if user is authenticated, get his favorites, else, pass
     try:
-        total_favorites = Favorites.objects.filter(user=User.objects.get
-                                                   (id=current_user.id))\
-                                                   .select_related()
-        for item in product_list.iterator():
-            favorites = total_favorites.filter(substitute=item.id)
+        for item in product_list:
+            # for each product to display, check if the user added it to its favs
+            # in order to display whether the product has already been saved or not
+            favorites = Favorites.objects.filter(user=User.objects.get
+                                                 (id=current_user.id),
+                                                 substitute=item.id)
             if favorites:
                 item.is_favorite = True
             else:
@@ -180,10 +180,10 @@ def search_substitutes(request, product):
     try:
         # for each product to display, check if the user added it to its favs
         # in order to display whether the product has already been saved or not
-        total_favorites = Favorites.objects.filter(user=User.objects.get
-                                                   (id=current_user.id))
-        for item in product_list.iterator():
-            favorites = total_favorites.filter(substitute=item.id)
+        for item in product_list:
+            favorites = Favorites.objects.filter(user=User.objects.get
+                                                 (id=current_user.id),
+                                                 substitute=item.id)
             if favorites:
                 item.is_favorite = True
             else:
