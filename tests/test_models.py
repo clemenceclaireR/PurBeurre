@@ -12,10 +12,12 @@ class ModelsTest(TestCase):
     """
     Models tests
     """
+
     def setUp(self):
         user = User.objects.create_user(password="test", is_superuser=False,
-                                   username="test", first_name="test",
-                                   last_name="test", email="test")
+                                        username="test",
+                                        first_name="test",
+                                        email="test")
         categories = Categories.objects.create(id=1, name="pâte à tariner")
         products = Products.objects.create(id=1, name='nutella', nutriscore='d',
                                            link="http://test.test.fr",

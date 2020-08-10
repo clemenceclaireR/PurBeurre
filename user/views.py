@@ -57,7 +57,10 @@ def user_login(request):
                                                    fail_silently=True)
                     return HttpResponseRedirect('../')
             else:
-                return HttpResponse('Invalid login')
+                message = messages.add_message(request, messages.ERROR,
+                                               'Identifiants non reconnus',
+                                               fail_silently=True)
+                return HttpResponseRedirect('/login')
         if form.is_valid():
             product = form.cleaned_data['research']
             return redirect('/' + product + '/')

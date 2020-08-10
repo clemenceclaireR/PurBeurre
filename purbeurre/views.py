@@ -57,7 +57,8 @@ def search_results(request, product):
             # in order to display whether the product has already been saved or not
             favorites = Favorites.objects.filter(user=User.objects.get
                                                  (id=current_user.id),
-                                                 substitute=item.id)
+                                                 substitute=item.id)\
+                                                .prefetch_related('user', 'substitute')
             if favorites:
                 item.is_favorite = True
             else:
@@ -183,7 +184,7 @@ def search_substitutes(request, product):
         for item in product_list:
             favorites = Favorites.objects.filter(user=User.objects.get
                                                  (id=current_user.id),
-                                                 substitute=item.id)
+                                                 substitute=item.id).prefetch_related('user', 'substitute')
             if favorites:
                 item.is_favorite = True
             else:

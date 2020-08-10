@@ -6,13 +6,13 @@
 
 {% block content %}
 
-{% include 'message.html' %}
-
 <div id="content" class="search_background">
   <div class="text-center  text-white">
     <h2 class="page-section">Liste des produits associés à votre recherche</h2>
   </div>
 </div>
+
+{% include 'message.html' %}
 
 {% if not products %}
   <h3 class="text-center page-section">Désolé, il n'y a pas de résultats</h3>
@@ -22,8 +22,13 @@
 
 {% for product in products %}
     <div class="row limit_width_size">
-      <li class="top-buffer offset-xs-1 col-xs-11 offset-sm-1 col-sm-5 offset-md-1 col-md-3  offset-lg-1 col-lg-3
+       {% if user.is_authenticated %}
+       <li class="top-buffer offset-xs-1 col-xs-11 offset-sm-1 col-sm-5 offset-md-1 col-md-3  offset-lg-1 col-lg-3
+        align-items-center product_block_with_button">
+       {% else %}
+       <li class="top-buffer offset-xs-1 col-xs-11 offset-sm-1 col-sm-5 offset-md-1 col-md-3  offset-lg-1 col-lg-3
         align-items-center product_block">
+       {% endif %}
         <div class="row">
           <div class="col-12 text-center active_padding">
             {% if product.nutriscore in 'a,b' %}

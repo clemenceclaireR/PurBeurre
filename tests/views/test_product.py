@@ -14,7 +14,7 @@ class ProductViewTest(TestCase):
     Views test for the search results page and the product description page
     """
     def setUp(self):
-        self.new_user = User.objects.create_user(id=1, username="test", password="test")
+        self.user = User.objects.create_user(id=1, username="test", password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
         self.product = Products.objects.create(id=1, name='nutella',
                                                nutriscore='d',

@@ -10,12 +10,6 @@ class LoginForm(forms.Form):
     """
     Login form
     """
-    # username = UsernameField(label="",
-    #                          widget=forms.TextInput
-    #                          (attrs={'autofocus': True,
-    #                                  'class': "form-control form-control-user",
-    #                                  'placeholder': "Adresse e-mail"}))
-
     email = forms.EmailField(label="",
                              required=True,
                              widget=forms.TextInput
@@ -40,48 +34,31 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        #fields = ('username', 'first_name', 'last_name', 'email')
-        fields = ('email',)
+        fields = ('email', 'first_name')
 
-    # username = UsernameField(label="",
-    #                          widget=forms.TextInput
-    #                          (attrs=
-    #                           {'autofocus': True,
-    #                            'placeholder': "Nom d'utilisateur",
-    #                            'class': "form-control form-control-user",
-    #                            'id': "exampleInputEmail"}))
     first_name = forms.CharField(label='',
                                  widget=forms.TextInput
                                  (attrs=
                                   {'placeholder': "Prénom",
-                                   'class': "form-control form-control-user",
-                                   'id': "exampleInputEmail"}))
-    # last_name = forms.CharField(label='',
-    #                             widget=forms.TextInput
-    #                             (attrs=
-    #                              {'placeholder': "Nom",
-    #                               'class': "form-control form-control-user",
-    #                               'id': "exampleInputEmail"}))
+                                   'class': "form-control form-control-user"}))
+
     password = forms.CharField(label='',
                                strip=False,
                                widget=forms.PasswordInput
                                (attrs=
                                 {'placeholder': "Mot de passe",
-                                 'class': "form-control form-control-user",
-                                 'id':"exampleInputEmail"}))
+                                 'class': "form-control form-control-user"}))
     password2 = forms.CharField(label='',
                                 widget=forms.PasswordInput
                                 (attrs=
                                  {'placeholder': "Répétez votre mot de passe",
-                                  'class': "form-control form-control-user",
-                                  'id': "exampleInputEmail"}))
+                                  'class': "form-control form-control-user"}))
     email = forms.EmailField(label="",
                              required=True,
                              widget=forms.TextInput
                              (attrs=
                               {'placeholder': "Adresse e-mail",
-                               'class': "form-control form-control-user",
-                               'id': "exampleInputEmail"}))
+                               'class': "form-control form-control-user"}))
 
     def clean_email(self):
         """

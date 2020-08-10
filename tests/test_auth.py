@@ -15,6 +15,7 @@ class LoginTest(TestCase):
 
     def setUp(self):
         User.objects.create_user(username="test",
+                                 first_name="test",
                                  password="test",
                                  email="test@test.fr")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
@@ -37,7 +38,7 @@ class LoginTest(TestCase):
         Login page redirects when right credentials is posted
         """
         response = self.client.post(reverse("login"), {
-            'username': "test", 'password': "test"
+            'email': "test@test.fr", 'password': "test"
         })
         self.assertTrue(response.status_code, 200)
         self.assertRedirects(response, '/')
@@ -47,7 +48,7 @@ class LoginTest(TestCase):
         Login page does not redirects when right credentials is posted
         """
         response = self.client.post(reverse("login"), {
-            'username': "false", 'password': 'wrong_password'
+            'email': "false", 'password': 'wrong_password'
         })
         self.assertTrue(response.status_code, 200)
 
@@ -67,16 +68,16 @@ class UserRegistrationTest(TestCase):
     """
 
     def setUp(self):
-        self.new_user = User.objects.create_user(id=1, username="user1",
+        self.new_user = User.objects.create_user(id=1,
+                                                 first_name="user1",
+                                                 username="user1",
                                                  password="test",
                                                  email="user1@test.fr")
         self.data = {
-            'username': 'test',
             'email': 'test@test.fr',
             'password': 'test',
             'password2': 'test',
             'first_name': 'test',
-            'last_name': 'test'
         }
 
     def test_page_return_expected_html(self):
@@ -113,8 +114,7 @@ class UserRegistrationTest(TestCase):
             'email': 'test@test.fr',
             'password': 'test',
             'password2': 'wrong',
-            'first_name': 'test',
-            'last_name': 'test'
+            'first_name': 'test'
         }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertTrue(response.status_code, 200)
 
@@ -127,7 +127,6 @@ class UserRegistrationTest(TestCase):
             'email': 'user1@test.fr',
             'password': 'test',
             'password2': 'test',
-            'first_name': 'test',
-            'last_name': 'test'
+            'first_name': 'test'
         }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertTrue(response.status_code, 200)

@@ -14,8 +14,8 @@ class FavoriteProductTest(TestCase):
     Views tests for saving/deleting and consulting saved products
     """
     def setUp(self):
-        self.new_user = User.objects.create_user(id=1, username="test",
-                                                 password="test")
+        self.user = User.objects.create_user(id=1, username="test",
+                                             password="test")
         self.category = Categories.objects.create(id=1, name="pâte à tariner")
         self.product = Products.objects.create(id=1, name='nutella',
                                                nutriscore='d',
@@ -79,7 +79,7 @@ class FavoriteProductTest(TestCase):
         User wants to access his saved products page
         """
         self.client.login(username='test', password='test')
-        Favorites.objects.create(substitute=self.product3, user=self.new_user)
+        Favorites.objects.create(substitute=self.product3, user=self.user)
         response = self.client.get(reverse('saved_products'))
         self.assertEqual(response.status_code, 200)
 
