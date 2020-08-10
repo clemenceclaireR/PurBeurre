@@ -3,13 +3,13 @@
 
 {% block content %}
 
-{% include 'message.html' %}
+
 <div id="content" class="background_index">
 <header class="masthead text-center d-flex text-white">
       <div class="container my-auto">
         <div class="row">
           <div class="col-10 mx-auto">
-
+            {% include 'message.html' %}
             <h1 class="text-uppercase">
               Du gras oui, mais de qualité !
             </h1>
@@ -26,7 +26,8 @@
                  {{ form.research }}
                  {% csrf_token %}
                   <div class="input-group-append">
-                <button type="submit" class="btn btn-primary btn-user btn-block bbtn-sm btn-submit button-form text-black-50">Chercher</button>
+                <button type="submit" class="btn btn-primary btn-user btn-block
+                bbtn-sm btn-submit button-form text-black-50">Chercher</button>
                       </div>
               </form>
             </div>

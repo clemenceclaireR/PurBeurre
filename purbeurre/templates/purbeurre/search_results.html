@@ -31,18 +31,24 @@
        {% endif %}
         <div class="row">
           <div class="col-12 text-center active_padding">
-            {% if product.nutriscore in 'a,b' %}
-               <p class="nutriscore good-nutriscore">
-                  {{ product.nutriscore }}</p>
-                  {% elif product.nutriscore == 'c' %}
-               <p class="nutriscore medium-nutriscore">
-                   {{ product.nutriscore }}</p>
-                   {% elif product.nutriscore in 'd,e' %}
+            {% if product.nutriscore in 'a' %}
+              <p class="nutriscore excellent-nutriscore">
+                {{ product.nutriscore }}</p>
+            {% elif product.nutriscore == 'b' %}
+              <p class="nutriscore good-nutriscore">
+                {{ product.nutriscore }}</p>
+            {% elif product.nutriscore == 'c' %}
+              <p class="nutriscore medium-nutriscore">
+                {{ product.nutriscore }}</p>
+            {% elif product.nutriscore in 'd' %}
+              <p class="nutriscore mediocre-nutriscore">
+                {{ product.nutriscore }}</p>
+            {% elif product.nutriscore in 'e' %}
               <p class="nutriscore bad-nutriscore">
-                   {{ product.nutriscore }}</p>
-                   {% else %}
+                {{ product.nutriscore }}</p>
+            {% else %}
               <p class="nutriscore">
-                  {{ product.nutriscore }}
+                {{ product.nutriscore }}
               </p>
             {% endif %}
           </div>

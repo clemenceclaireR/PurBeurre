@@ -5,13 +5,13 @@
 
 {% block content %}
 
-{% include 'message.html' %}
-
 <div id="content" class="saved_product_background">
   <div class="text-center text-white">
     <h2 class="page-section">Mes aliments</h2>
   </div>
 </div>
+
+{% include 'message.html' %}
 
 {% if not list_favorites %}
 <div class="text-center ">
@@ -32,20 +32,26 @@
         align-items-center product_block_with_button">
             <div class="row">
               <div class="col-12 text-center active_padding">
-                 {% if product.nutriscore in 'a,b' %}
-                    <p class="nutriscore good-nutriscore">
-                        {{ product.nutriscore }}</p>
-                    {% elif product.nutriscore == 'c' %}
-                    <p class="nutriscore medium-nutriscore">
-                        {{ product.nutriscore }}</p>
-                    {% elif product.nutriscore in 'd,e' %}
-                    <p class="nutriscore bad-nutriscore bg-danger">
-                        {{ product.nutriscore }}</p>
-                    {% else %}
-                    <p class="nutriscore">
-                        {{ product.nutriscore }}
-                    </p>
-                 {% endif %}
+                {% if product.nutriscore in 'a' %}
+                  <p class="nutriscore excellent-nutriscore">
+                    {{ product.nutriscore }}</p>
+                {% elif product.nutriscore == 'b' %}
+                  <p class="nutriscore good-nutriscore">
+                    {{ product.nutriscore }}</p>
+                {% elif product.nutriscore == 'c' %}
+                  <p class="nutriscore medium-nutriscore">
+                    {{ product.nutriscore }}</p>
+                {% elif product.nutriscore in 'd' %}
+                  <p class="nutriscore mediocre-nutriscore">
+                    {{ product.nutriscore }}</p>
+                {% elif product.nutriscore in 'e' %}
+                  <p class="nutriscore bad-nutriscore">
+                    {{ product.nutriscore }}</p>
+                {% else %}
+                  <p class="nutriscore">
+                    {{ product.nutriscore }}
+                  </p>
+                {% endif %}
               </div>
             </div>
 
