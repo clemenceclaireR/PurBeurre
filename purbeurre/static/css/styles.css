@@ -148,11 +148,22 @@
 }
 
 .search_image {
-  height: 200px;
-  /*height: 20%;*/
-  border-radius: 1em;
-  position: relative;
-  max-width: 95%;
+    height: 200px;
+    border-radius: 1em;
+    position: relative;
+    max-width: 95%;
+}
+
+.nutritional_score_block {
+  padding-bottom: 2em;
+}
+
+.nutritional_info_block {
+  padding-bottom: 2em;
+}
+
+.nutritional_info_pic {
+    max-width: 95%;
 }
 
 .product_list {
@@ -160,8 +171,8 @@
 }
 
 ul li {
-  display: inline;
-  padding: 10px;
+    display: inline;
+    padding: 10px;
 }
 
 
