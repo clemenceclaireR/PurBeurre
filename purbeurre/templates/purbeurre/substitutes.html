@@ -16,6 +16,17 @@
 
 {% include 'message.html' %}
 
+<div class="text-center">
+ <button class="btn btn-info active_padding">
+   <i class="fas fa-candy-cane"></i>
+   <a class=prod_info" href = {% url 'product_description' product=research.name  %}>
+   Voir les informations nutritionnelles pour le produit {{ research.name }}</a>
+   <i class="fas fa-candy-cane"></i>
+ </button>
+  </div>
+
+
+
 {% if not product_list %}
 <h3 class="text-center page-section">Désolé, nous n'avons pas trouvé de substitut plus sain.</h3>
 

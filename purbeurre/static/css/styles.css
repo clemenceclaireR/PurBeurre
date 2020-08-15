@@ -143,6 +143,24 @@
    height: 320px;
 }
 
+.product_info_block {
+   border-radius: 1em;
+   border: solid 1px #c45525;
+   padding: 1em;
+   box-shadow: 1px 2px 2px rgba(196,85,37,.8);
+   background-color: #eddbd5;
+   height: 250px;
+   width: 50%
+}
+
+.btn-info a {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  margin: 1em;
+  padding: 1em;
+}
+
 .limit_width_size {
      max-width: 95%;
 }
@@ -2752,6 +2770,8 @@ fieldset:disabled a.btn {
   color: #fff;
   background-color: #17a2b8;
   border-color: #17a2b8;
+  margin: 1em;
+  padding: 1em;
 }
 .btn-info:hover {
   color: #fff;

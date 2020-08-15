@@ -69,6 +69,8 @@ Write inside your environment variables in a dictionary format, like so:
     {
       "SECRET_KEY": "mysecretkey",
       "DB_PASSWORD":  "mypassword",
+      "DB_USER":  "username",
+      "DB_NAME":  "dbname",
       "DEBUG": "True"
     }
 
