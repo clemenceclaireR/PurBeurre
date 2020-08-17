@@ -15,45 +15,44 @@
 
 {% if not list_favorites %}
 <div class="text-center ">
-    <h3  class="page-section">Vous n'avez pas enregistré de produit pour le moment.</h3>
+  <h3  class="page-section">Vous n'avez pas enregistré de produit pour le moment.</h3>
 </div>
 
 {% else %}
 <div class="text-center">
-    <h3 class="active_padding">Vos produits enregistrés</h3>
+  <h3 class="active_padding">Vos produits enregistrés</h3>
 </div>
 
 <ul class="justify-content-center align-items-center">
 {% for product in products %}
 
-    <div class="row limit_width_size">
-        <li class="top-buffer col-xs-11 offset-xs-1 col-sm-5 offset-sm-1
+  <div class="row limit_width_size">
+    <li class="top-buffer col-xs-11 offset-xs-1 col-sm-5 offset-sm-1
         col-md-3 offset-md-1  col-lg-3 offset-lg-1
         align-items-center product_block_with_button">
-            <div class="row">
-              <div class="col-12 text-center active_padding">
-                {% if product.nutriscore in 'a' %}
-                  <p class="nutriscore excellent-nutriscore">
-                    {{ product.nutriscore }}</p>
-                {% elif product.nutriscore == 'b' %}
-                  <p class="nutriscore good-nutriscore">
-                    {{ product.nutriscore }}</p>
-                {% elif product.nutriscore == 'c' %}
-                  <p class="nutriscore medium-nutriscore">
-                    {{ product.nutriscore }}</p>
-                {% elif product.nutriscore in 'd' %}
-                  <p class="nutriscore mediocre-nutriscore">
-                    {{ product.nutriscore }}</p>
-                {% elif product.nutriscore in 'e' %}
-                  <p class="nutriscore bad-nutriscore">
-                    {{ product.nutriscore }}</p>
-                {% else %}
-                  <p class="nutriscore">
-                    {{ product.nutriscore }}
-                  </p>
-                {% endif %}
-              </div>
-            </div>
+      <div class="row">
+        <div class="col-12 text-center active_padding">
+          {% if product.nutriscore in 'a' %}
+            <p class="nutriscore excellent-nutriscore">
+              {{ product.nutriscore }}</p>
+          {% elif product.nutriscore == 'b' %}
+            <p class="nutriscore good-nutriscore">
+              { product.nutriscore }}</p>
+          {% elif product.nutriscore == 'c' %}
+            <p class="nutriscore medium-nutriscore">
+              {{ product.nutriscore }}</p>
+          {% elif product.nutriscore in 'd' %}
+            <p class="nutriscore mediocre-nutriscore">
+              {{ product.nutriscore }}</p>
+          {% elif product.nutriscore in 'e' %}
+            <p class="nutriscore bad-nutriscore">
+              {{ product.nutriscore }}</p>
+          {% else %}
+            <p class="nutriscore">
+              {{ product.nutriscore }}</p>
+          {% endif %}
+        </div>
+      </div>
 
     <div class="row">
       <div class="col-12">
@@ -75,7 +74,7 @@
                   action="{% url 'delete_saved_product' %}" >
           {% csrf_token %}
            <input type="hidden" name="delete_product" value="{{ product }}" >
-           <button type=”submit” class="btn btn-primary btn-user ">Supprimer</button>
+           <button type="submit" class="btn btn-primary">Supprimer</button>
 
         </form>
       </div>

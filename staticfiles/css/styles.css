@@ -65,6 +65,10 @@
   padding: 0.5em;
 }
 
+.rounded-portrait {
+  border-radius: 1rem;
+}
+
 .nutriscore {
     position: absolute;
     width: 3rem;
@@ -162,14 +166,14 @@
 }
 
 .limit_width_size {
-     max-width: 95%;
+  max-width: 95%;
 }
 
 .search_image {
-    height: 200px;
-    border-radius: 1em;
-    position: relative;
-    max-width: 95%;
+  height: 200px;
+  border-radius: 1em;
+  position: relative;
+  max-width: 95%;
 }
 
 .nutritional_score_block {
@@ -192,7 +196,6 @@ ul li {
     display: inline;
     padding: 10px;
 }
-
 
 
 /*!

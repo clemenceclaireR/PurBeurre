@@ -16,24 +16,23 @@
 
 
 <div class="row">
-    <div class="col-xs-12, col-sm-6, col-md-6, col-lg-6 ml-auto text-center nutritional_score_block">
-        <img src="https://static.openfoodfacts.org/images/misc/nutriscore-{{ product_description.nutriscore }}.png">
-    </div>
+  <div class="col-xs-12, col-sm-6, col-md-6, col-lg-6 ml-auto text-center nutritional_score_block">
+    <img src="https://static.openfoodfacts.org/images/misc/nutriscore-{{ product_description.nutriscore }}.png">
+  </div>
 
-    <div class="col-xs-12, col-sm-6, col-md-6, col-lg-6 ml-auto text-center nutritional_info_block">
-        <h4>Informations nutritionelles</h4>
-          <img class="nutritional_info_pic" src ={{ product_description.nutrition_image }}>
-    </div>
+  <div class="col-xs-12, col-sm-6, col-md-6, col-lg-6 ml-auto text-center nutritional_info_block">
+    <h4>Informations nutritionelles</h4>
+      <img class="nutritional_info_pic" src ={{ product_description.nutrition_image }}>
+  </div>
 </div>
 
 
  <div class="row flex-d justify-content-center" id="url-off">
-     <div class="text-primary text-center" id="off-link-container">
-         <h3><a id="off-link" href="{{ product_description.link }}"
+    <div class="text-primary text-center" id="off-link-container">
+      <h3><a id="off-link" href="{{ product_description.link }}"
                 target="_blank">Voir la fiche d'OpenFoodFacts</a></h3>
-     </div>
-  </div>
-
+    </div>
+ </div>
 
 
 {% endblock %}
