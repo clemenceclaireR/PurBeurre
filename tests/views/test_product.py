@@ -37,10 +37,10 @@ class ProductViewTest(TestCase):
         """
         Search form works from results page
         """
-        response = self.client.post('/search_results/product/', {
-            'research': 'nutella'
+        response = self.client.post('/search_results/nutella/', {
+            'research': 'nutella bio'
         })
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_view_url_exists_at_desired_location(self):
         """
@@ -69,10 +69,10 @@ class ProductViewTest(TestCase):
         """
         Search form works from product description page
         """
-        response = self.client.post('/product_description/product/', {
-            'research': 'product'
+        response = self.client.post('/product_description/nutella/', {
+            'research': 'nutella bio'
         })
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_view_product_description_page(self):
         """

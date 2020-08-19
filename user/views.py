@@ -15,11 +15,10 @@ def register(request):
     """
     Register a user account
     """
-    form = SearchForm(request.POST)
+    form = SearchForm()
 
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
-        form = SearchForm(request.POST)
 
         if user_form.is_valid():
             new_user = user_form.save(commit=False)
@@ -30,14 +29,8 @@ def register(request):
             return render(request,
                           'registration/register_done.html',
                           locals())
-
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
-
     else:
         user_form = UserRegistrationForm()
-        form = SearchForm()
     return render(request, 'registration/register.html', locals())
 
 
@@ -47,7 +40,7 @@ def user_login(request):
     """
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
-        form = SearchForm(request.POST)
+        form = SearchForm()
         if login_form.is_valid():
             cd = login_form.cleaned_data
             user = authenticate(request, email=cd['email'],
@@ -64,12 +57,9 @@ def user_login(request):
                                                'Identifiants non reconnus',
                                                fail_silently=True)
                 return HttpResponseRedirect('/login')
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
     else:
         login_form = LoginForm()
-        form = SearchForm(request.POST)
+        form = SearchForm()
     return render(request, 'registration/login.html', locals())
 
 
@@ -78,8 +68,5 @@ def account(request):
     """
     Display user account page
     """
-    form = SearchForm(request.POST)
-    if form.is_valid():
-        product = form.cleaned_data['research']
-        return redirect('search_results/' + product + '/')
+    form = SearchForm()
     return render(request, 'registration/account.html', locals())

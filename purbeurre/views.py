@@ -1,14 +1,12 @@
 #! usr/bin/env python3
 # -*- Coding: UTF-8 -*-
 
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import SearchForm
-from .utils import handle_search_form
 from .models.products import Products
 from .models.favorites import Favorites
 
@@ -31,7 +29,7 @@ def legal_information(request):
     """
     Display legal information about the website
     """
-    form = SearchForm(request.POST)
+    form = SearchForm()
     return render(request, 'legal_information.html', locals())
 
 
@@ -39,14 +37,8 @@ def search_results(request, product):
     """
     Search for a product written in the search form by a user
     """
-    form = SearchForm(request.POST)
+    form = SearchForm()
     current_user = request.user
-    if request.method == 'POST':
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
-    else:
-        SearchForm()
 
     product_list = Products.objects.\
         filter(name__icontains=product)
@@ -113,7 +105,7 @@ def saved_products(request):
     """
     Display user's saved products
     """
-    form = SearchForm(request.POST)
+    form = SearchForm()
     current_user = request.user
     favorites = Favorites.objects.filter(user=current_user.id)
     list_favorites = []
@@ -160,14 +152,8 @@ def search_substitutes(request, product):
     """
     Search substitutes for a given product
     """
-    form = SearchForm(request.POST)
+    form = SearchForm()
     current_user = request.user
-    if request.method == 'POST':
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
-    else:
-        SearchForm()
 
     page = request.GET.get('page', 1)
     research = Products.objects.get(name=product)
@@ -212,13 +198,6 @@ def product_description(request, product):
     Display nutritional information for a
     given product
     """
-    form = SearchForm(request.POST)
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            product = form.cleaned_data['research']
-            return redirect('/' + product + '/')
-    else:
-        SearchForm()
+    form = SearchForm()
     product_description = Products.objects.get(name=product)
     return render(request, 'purbeurre/product_page.html', locals())

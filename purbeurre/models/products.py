@@ -21,18 +21,18 @@ class Products(models.Model):
 
     category = models.ForeignKey(Categories,
                                  on_delete=models.CASCADE,
-                                verbose_name = 'Category',
-                                help_text = 'Foreign key to the category of the product')
+                                 verbose_name='Category',
+                                 help_text='Foreign key to the category of the product')
     nutriscore = models.CharField(max_length=1,
                                   null=True,
                                   verbose_name='Nutriscore',
                                   help_text='Nutritional score of the product')
     link = models.URLField(verbose_name='Link',
-                                  help_text='Hyperlink to Openfoodfacts product page')
+                           help_text='Hyperlink to Openfoodfacts product page')
     image = models.URLField(verbose_name='Image',
-                                  help_text='Hyperlink to Openfoodfacts product image')
+                            help_text='Hyperlink to Openfoodfacts product image')
     nutrition_image = models.URLField(verbose_name='Nutrition image',
-                                  help_text='Hyperlink to Openfoodfacts ranking nutriscore image')
+                                      help_text='Hyperlink to Openfoodfacts ranking nutriscore image')
 
     def __str__(self):
         return str(self.name)

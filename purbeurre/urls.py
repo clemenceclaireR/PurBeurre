@@ -7,7 +7,6 @@ from . import views
 
 
 urlpatterns = [
-    # path('account/', views.account, name='account'),
     path('saved_products/', views.saved_products,
          name='saved_products'),
     url('search_results/(?P<product>.*)/$', views.search_results,
