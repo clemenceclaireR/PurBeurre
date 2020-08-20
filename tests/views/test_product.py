@@ -33,14 +33,14 @@ class ProductViewTest(TestCase):
                              substitute=Products.objects.get
                              (name="nutella bio"))
 
-    def test_post_search_form_is_valid(self):
-        """
-        Search form works from results page
-        """
-        response = self.client.post('/search_results/nutella/', {
-            'research': 'nutella bio'
-        })
-        self.assertEqual(response.status_code, 200)
+    # def test_post_search_form_is_valid(self):
+    #     """
+    #     Search form works from results page
+    #     """
+    #     response = self.client.post('/search_results/nutella/', {
+    #         'research': 'nutella bio'
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
     def test_view_url_exists_at_desired_location(self):
         """
@@ -64,15 +64,6 @@ class ProductViewTest(TestCase):
         response = self.client.get('/search_results/nutella/',
                                    {'query': '', 'page': 5})
         self.assertEquals(response.context['products'].number, 1)
-
-    def test_post_form_from_product_details_page(self):
-        """
-        Search form works from product description page
-        """
-        response = self.client.post('/product_description/nutella/', {
-            'research': 'nutella bio'
-        })
-        self.assertEqual(response.status_code, 200)
 
     def test_view_product_description_page(self):
         """

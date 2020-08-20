@@ -52,15 +52,6 @@ class LoginTest(TestCase):
         })
         self.assertTrue(response.status_code, 200)
 
-    def test_post_search_form_is_valid(self):
-        """
-        Search form works from login page
-        """
-        response = self.client.post(reverse('login'), {
-            'research': 'product'
-        })
-        self.assertEqual(response.status_code, 302)
-
 
 class UserRegistrationTest(TestCase):
     """
@@ -87,15 +78,6 @@ class UserRegistrationTest(TestCase):
         response = self.client.get(reverse('register'))
         self.assertTemplateUsed(response, 'registration/register.html')
 
-    def test_post_search_form_is_valid(self):
-        """
-        Search form works from register page
-        """
-        response = self.client.post(reverse('register'), {
-            'research': 'product'
-        })
-        self.assertEqual(response.status_code, 302)
-
     def test_register(self):
         """
         Add user when data posted is correct
@@ -116,6 +98,7 @@ class UserRegistrationTest(TestCase):
             'password2': 'wrong',
             'first_name': 'test'
         }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
+        self.assertEqual(User.objects.all().count(), 1)
         self.assertTrue(response.status_code, 200)
 
     def test_register_email_alrd_registered(self):
@@ -129,4 +112,5 @@ class UserRegistrationTest(TestCase):
             'password2': 'test',
             'first_name': 'test'
         }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
+        self.assertEqual(User.objects.all().count(), 1)
         self.assertTrue(response.status_code, 200)

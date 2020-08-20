@@ -91,13 +91,3 @@ class AccountTest(TestCase):
         response = self.client.get(reverse('account'))
         self.assertEqual(response.status_code, 200)
 
-    def test_post_form_from_account_page(self):
-        """
-        Search form works from account page
-        """
-        self.client.login(username='test', password='test')
-        response = self.client.post(reverse('account'), {
-            'research': 'product'
-            })
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, '/account/search_results/product/')
