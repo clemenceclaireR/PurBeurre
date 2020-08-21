@@ -48,7 +48,7 @@ class LoginTest(TestCase):
         Login page does not redirects when right credentials is posted
         """
         response = self.client.post(reverse("login"), {
-            'email': "false", 'password': 'wrong_password'
+            'email': "false@test.fr", 'password': 'wrong_password'
         })
         self.assertTrue(response.status_code, 200)
 
@@ -80,12 +80,12 @@ class UserRegistrationTest(TestCase):
 
     def test_register(self):
         """
-        Add user when data posted is correct
+        Add user when posted data is correct
         """
         response = self.client.post(reverse("register"), data=self.data, follow=True,
                                     HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertEqual(User.objects.all().count(), 2)
-        self.assertTrue(response.status_code, 200)
+
 
     def test_register_psw_dont_match(self):
         """
@@ -99,11 +99,12 @@ class UserRegistrationTest(TestCase):
             'first_name': 'test'
         }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertEqual(User.objects.all().count(), 1)
-        self.assertTrue(response.status_code, 200)
+
 
     def test_register_email_alrd_registered(self):
         """
-        Doesn't add user when entered email in posted data is already register
+        Doesn't add user when entered email in posted data
+        is already registered
         """
         response = self.client.post(reverse("register"), data={
             'username': 'test',
@@ -113,4 +114,4 @@ class UserRegistrationTest(TestCase):
             'first_name': 'test'
         }, follow=True, HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertEqual(User.objects.all().count(), 1)
-        self.assertTrue(response.status_code, 200)
+

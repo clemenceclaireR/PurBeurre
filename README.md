@@ -76,12 +76,12 @@ Write inside your environment variables in a dictionary format, like so:
 
 ### Postgres database
 
-**Install Postgres**
+**Install PostgreSQL**
 
 This project is configured for a Postgres SQL database. If you want to use
 another database, you'll have to change the settings in `settings.py` file.
 
-Install on Linux (check for you distribution, here, it's working for Debian) :
+Install on Linux (check for you distribution, here, it's working for Debian 10) :
 
     apt install postgresql-11 postgresql-client-11
 
