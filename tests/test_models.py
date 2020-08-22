@@ -12,7 +12,6 @@ class ModelsTest(TestCase):
     """
     Models tests
     """
-
     def setUp(self):
         user = User.objects.create_user(password="test", is_superuser=False,
                                         username="test",

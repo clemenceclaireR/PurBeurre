@@ -20,12 +20,12 @@
   <form class="form-inline my-2 my-lg-0 justify-content-center" role="form" method="post"
         action="{% url 'product_description' product=research.name  %}" id="post-form">
     {% csrf_token %}
-      <button type="submit" class="btn btn-info active_padding">
-        <p>
+      <button type="submit" class="btn btn-info">
+        <h4>
           <i class="fas fa-candy-cane"></i>
-          Voir les informations nutritionnelles pour le produit : {{ research.name }}
+            Voir les informations nutritionnelles pour le produit : {{ research.name }}
           <i class="fas fa-candy-cane"></i>
-        </p>
+        </h4>
       </button>
   </form>
 </div>

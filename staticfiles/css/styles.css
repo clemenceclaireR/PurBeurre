@@ -165,6 +165,10 @@
   padding: 1em;
 }
 
+button h4 {
+  font-size: 1rem;
+}
+
 .limit_width_size {
   max-width: 95%;
 }
@@ -199,6 +203,16 @@ ul li {
 
 .user_profile_picture {
     width: 10%;
+}
+
+/* MEDIA QUERIES  */
+
+/* small devices like smartphones */
+@media all and (max-width: 800px) {
+
+    .user_profile_picture {
+        width: 25%;
+  }
 }
 
 
