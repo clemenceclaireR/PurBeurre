@@ -14,7 +14,7 @@ class LoginTest(TestCase):
     """
 
     def setUp(self):
-        User.objects.create_user(username="test",
+        self.user = User.objects.create_user(username="test",
                                  first_name="test",
                                  password="test",
                                  email="test@test.fr")
@@ -59,11 +59,11 @@ class UserRegistrationTest(TestCase):
     """
 
     def setUp(self):
-        self.new_user = User.objects.create_user(id=1,
-                                                 first_name="user1",
-                                                 username="user1",
-                                                 password="test",
-                                                 email="user1@test.fr")
+        self.user = User.objects.create_user(id=1,
+                                             first_name="user1",
+                                             username="user1",
+                                             password="test",
+                                             email="user1@test.fr")
         self.data = {
             'email': 'test@test.fr',
             'password': 'test',
@@ -82,7 +82,7 @@ class UserRegistrationTest(TestCase):
         """
         Add user when posted data is correct
         """
-        response = self.client.post(reverse("register"), data=self.data, follow=True,
+        self.client.post(reverse("register"), data=self.data, follow=True,
                                     HTTP_X_REQUESTED='XMLHttpRequest')
         self.assertEqual(User.objects.all().count(), 2)
 
@@ -91,7 +91,7 @@ class UserRegistrationTest(TestCase):
         """
         Doesn't add user when password don't match in posted data
         """
-        response = self.client.post(reverse("register"), data={
+        self.client.post(reverse("register"), data={
             'username': 'test',
             'email': 'test@test.fr',
             'password': 'test',
@@ -106,7 +106,7 @@ class UserRegistrationTest(TestCase):
         Doesn't add user when entered email in posted data
         is already registered
         """
-        response = self.client.post(reverse("register"), data={
+        self.client.post(reverse("register"), data={
             'username': 'test',
             'email': 'user1@test.fr',
             'password': 'test',

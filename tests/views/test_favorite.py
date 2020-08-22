@@ -30,7 +30,7 @@ class FavoriteProductTest(TestCase):
                                        image="path/to/image",
                                        category=Categories.objects.get
                                        (name=self.category))
-        self.product3 = Products.objects.create(id=3, name='tuc',  # id = 2 avant
+        self.product3 = Products.objects.create(id=3, name='tuc',
                                           nutriscore='d',
                                           link="http://test.test.fr",
                                           image="path/to/image",

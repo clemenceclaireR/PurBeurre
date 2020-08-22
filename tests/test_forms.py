@@ -33,7 +33,6 @@ class RegisterFormTest(TestCase):
     Form tests for register form
     """
     def setUp(self):
-        self.new_user = User()
         self.data = {
             'username': 'test2',
             'email': 'test@test.fr',

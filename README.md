@@ -74,7 +74,7 @@ Write inside your environment variables in a dictionary format, like so:
       "DEBUG": "True"
     }
 
-### Postgres database
+### PostgreSQL database
 
 **Install PostgreSQL**
 
@@ -118,7 +118,7 @@ In order to create the tables, run the following commands :
 
 In order to run the tests, do like so :
 - Go the the project's root in your terminal
-- Runthe following command (coverage has to be installed - included in requirements.txt
+- Run the following command (coverage has to be installed - included in requirements.txt
 file of this project) :
 
 
