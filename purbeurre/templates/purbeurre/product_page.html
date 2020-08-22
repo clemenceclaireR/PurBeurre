@@ -26,13 +26,17 @@
   </div>
 </div>
 
-
- <div class="row flex-d justify-content-center" id="url-off">
-    <div class="text-primary text-center" id="off-link-container">
-      <h3><a id="off-link" href="{{ product_description.link }}"
-                target="_blank">Voir la fiche d'OpenFoodFacts</a></h3>
-    </div>
- </div>
+<div class="text-center col-sm-12">
+  <form class="form-inline my-2 my-lg-0 justify-content-center" role="form" method="post"
+        action="{{ product_description.link }}" id="post-form">
+    {% csrf_token %}
+      <button type="submit" class="btn btn-info active_padding">
+        <h3>
+          Voir la fiche d'OpenFoodFacts
+        </h3>
+      </button>
+  </form>
+</div>
 
 
 {% endblock %}
